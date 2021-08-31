@@ -1,12 +1,13 @@
-## Welcome to GitHub Pages
+##  Math is fun
 
-You can use the [editor on GitHub](https://github.com/jenniesun/biostats-blog/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Assignments 1
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Solve 3 problems from the Euler Project using Python. Of the 3 problems, one must have been solved by fewer than 25,000 people, 1 fewer than 100,000 people and one fewer than 500,000 people. If you want to challenge yourself, choose all 3 problems from the category solved by fewer than 25,000 people. Write a function for each problem, and use nuympy-styple docstrings to annotate each function. Write a blog describing your solutions and how you approached each problem.
 
-### Markdown
+### Problem 1 -
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+(solved by fewer than 100,000 people)
+Link to the problem: 
 
 ```markdown
 Syntax highlighted code block
@@ -28,10 +29,17 @@ Syntax highlighted code block
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
-### Jekyll Themes
+### Problem 2 - 
+
+(solved by fewer than 100,000 people)
+Link to the problem: 
 
 Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/jenniesun/biostats-blog/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
 
-### Support or Contact
+### Problem 3 - 
+
+(solved by fewer than 25,000 people)
+Link to the problem: 
+
 
 Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
