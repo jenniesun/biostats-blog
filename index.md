@@ -5,6 +5,7 @@ Solve 3 problems from the Euler Project using Python. Of the 3 problems, one mus
 ### Problem 1 -
 
 (solved by fewer than 100,000 people)
+
 Link to the problem: 
 
 ```markdown
@@ -25,19 +26,20 @@ Syntax highlighted code block
 [Link](url) and ![Image](src)
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
 ### Problem 2 - 
 
 (solved by fewer than 100,000 people)
+
 Link to the problem: 
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/jenniesun/biostats-blog/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+
 
 ### Problem 3 - 
 
 (solved by fewer than 25,000 people)
+
 Link to the problem: 
 
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+
