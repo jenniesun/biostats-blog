@@ -2,6 +2,7 @@
 
 Solve 3 problems from the Euler Project using Python. Of the 3 problems, one must have been solved by fewer than 25,000 people, 1 fewer than 100,000 people and one fewer than 500,000 people. If you want to challenge yourself, choose all 3 problems from the category solved by fewer than 25,000 people. Write a function for each problem, and use nuympy-styple docstrings to annotate each function. Write a blog describing your solutions and how you approached each problem.
 
+
 ### Euler Project Problem 4 - Largest palindrome product 
 _A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99. 
 Find the largest palindrome made from the product of two 3-digit numbers._
@@ -104,3 +105,4 @@ def sum_reversible(n):
 sum_reversible(1_000_000_000) # 608720
 ```
 
+The code can also be found in this notebook. 
