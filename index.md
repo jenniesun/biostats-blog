@@ -7,7 +7,8 @@ Solve 3 problems from the Euler Project using Python. Of the 3 problems, one mus
 _A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99. 
 Find the largest palindrome made from the product of two 3-digit numbers._
 
-_[Link to the problem] (https://projecteuler.net/problem=4) (Solved by fewer than 500,000 people)_
+_[Link to the problem!] (https://projecteuler.net/problem=4) 
+(Solved by fewer than 500,000 people)_
 
 Finding palindrome is definitely one of the most classical practice problems encountered by most newbie programmers. Other than just finding the palindromic number, this question takes it a littler further by asking you to find the largest palindrome made from the product of two 3-digit numbers. Since a palindromic pair is made of 2 numbers, the first approch that came to my mind is to use brute force - creating two loops that loop through all the numbers under a specified limit, which is also the integer n that the largest_palin function below takes. To answer this question specifically, this limit would be 1000 since looping thourgh 1 to 1000 will cover all 3-digit numbers.
 
