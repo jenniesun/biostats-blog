@@ -7,7 +7,7 @@ Solve 3 problems from the Euler Project using Python. Of the 3 problems, one mus
 _A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99. 
 Find the largest palindrome made from the product of two 3-digit numbers._
 
-_[Link to the problem!] (https://projecteuler.net/problem=4) 
+_[Link to the problem](https://projecteuler.net/problem=4) 
 (Solved by fewer than 500,000 people)_
 
 Finding palindrome is definitely one of the most classical practice problems encountered by most newbie programmers. Other than just finding the palindromic number, this question takes it a littler further by asking you to find the largest palindrome made from the product of two 3-digit numbers. Since a palindromic pair is made of 2 numbers, the first approch that came to my mind is to use brute force - creating two loops that loop through all the numbers under a specified limit, which is also the integer n that the largest_palin function below takes. To answer this question specifically, this limit would be 1000 since looping thourgh 1 to 1000 will cover all 3-digit numbers.
@@ -38,7 +38,8 @@ largest_palin(1000) #906609
 
 _145 is a curious number, as 1! + 4! + 5! = 1 + 24 + 120 = 145. Find the sum of all numbers which are equal to the sum of the factorial of their digits. Note: As 1! = 1 and 2! = 2 are not sums they are not included._
 
-_Link to the problem: https://projecteuler.net/problem=34 (Solved by fewer than 100,000 people)_
+_[Link to the problem](https://projecteuler.net/problem=34)
+(Solved by fewer than 100,000 people)_
 
 If a number is equal to the sum of the factorial of their digits, then this number is called a curious number. To approach this problem, I start by importing the math package since I know at some point I would be calculating the factorial of some numbers and the `math.factorial` method would come in handy. Since the task here is related to fatorial of the digits of curious numbers, which can also have 9 options (factorial of 1 to 9), I precompute the factorials of those 9 numbers and save them in a dictionary structure so they can be easily refered later, and it won't be as computationally expensive either. 
 
@@ -80,7 +81,8 @@ find_fac_sum(50000) # 40730
 _Some positive integers n have the property that the sum [ n + reverse(n) ] consists entirely of odd (decimal) digits. For instance, 36 + 63 = 99 and 409 + 904 = 1313. We will call such numbers reversible; so 36, 63, 409, and 904 are reversible. Leading zeroes are not allowed in either n or reverse(n). There are 120 reversible numbers below one-thousand. How many reversible numbers are there below one-billion (10^9)?_
 (solved by fewer than 25,000 people)
 
-_Link to the problem: https://projecteuler.net/problem=145 (Solved by fewer than 25,000 people)_
+_[Link to the problem](https://projecteuler.net/problem=145)
+(Solved by fewer than 25,000 people)_
 
 To approch this problem, I start by forming a loop to loop through all numbers below the upper limit of iterations, which is one-billion here. Since the prompt specifies that leading zeros are not allowed in either the number itself or the reversed version of this number, I set a condition to exclude this situation before moving forward. Then, I compute the sum of the number itself and the reversed version of the number. After that, I create a variable `split`, which essentially splits the digits in this number and save them in a list. 
 
@@ -106,4 +108,4 @@ def sum_reversible(n):
 sum_reversible(1_000_000_000) # 608720
 ```
 
-The code can also be found in this notebook. 
+The code can also be found in [this notebook](https://github.com/jenniesun/biostats-blog/blob/main/assignment1.ipynb).
