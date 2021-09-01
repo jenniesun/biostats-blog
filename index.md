@@ -106,5 +106,6 @@ def sum_reversible(n):
 
 sum_reversible(1_000_000_000) # 608720
 ```
+![](./problem145.png)
 
-The code can also be found in [this notebook](https://github.com/jenniesun/biostats-blog/blob/main/assignment1.ipynb).
+The complete code can also be found in [this notebook](https://github.com/jenniesun/biostats-blog/blob/main/assignment1.ipynb).
