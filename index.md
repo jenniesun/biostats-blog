@@ -1,6 +1,6 @@
 ## Homework Project 1 - Math is Fun
 
-Solve 3 problems from the Euler Project using Python. Of the 3 problems, one must have been solved by fewer than 25,000 people, 1 fewer than 100,000 people and one fewer than 500,000 people. If you want to challenge yourself, choose all 3 problems from the category solved by fewer than 25,000 people. Write a function for each problem, and use nuympy-styple docstrings to annotate each function. Write a blog describing your solutions and how you approached each problem.
+Solve 3 problems from the Euler Project using Python. Of the 3 problems, one must have been solved by fewer than 25,000 people, 1 fewer than 100,000 people and one fewer than 500,000 people. Write a function for each problem, and use numpy-stple docstrings to annotate each function. Below describes my solutions and how I approached each problem.
 
 
 ### Euler Project Problem 4 - Largest palindrome product 
