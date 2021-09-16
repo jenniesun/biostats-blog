@@ -17,6 +17,13 @@ Now use these helper functions to write the function that you need. Write a unit
 
 
 
+
+The complete code can also be found in [this notebook](https://github.com/jenniesun/biostats-blog/blob/main/assignment2.ipynb).
+
+
+
+
+
 ## Homework Project 1 - Math is Fun
 
 Solve 3 problems from the Euler Project using Python. Of the 3 problems, one must have been solved by fewer than 25,000 people, 1 fewer than 100,000 people and one fewer than 500,000 people. Write a function for each problem, and use numpy-stple docstrings to annotate each function. Below describes my solutions and how I approached each problem.
