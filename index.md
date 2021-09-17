@@ -16,7 +16,8 @@ _Now use these helper functions to write the function that you need. Write a uni
 
 
 
-To tackle this problem, I start by working on the first helper function - which generates an arbitrary large expansion of a mathematical expression. After a quick internet search, I found that `mpmath` can help me solve this problem. `mpmath` is a Python library for real and complex floating-point arithmetic with arbitrary precision. After importing the `mpmath` library, I set `mp.dps = 200` to let my decimal expansion function to know that I want to compute and have the result show 50 digits of the input number `n`. The reason why I set this number to be 200 will be discussed later in the blog, specifically, in the section where I talk about the final function and testing. Since we only care about the decimal expansion of the input number, which are the digits to the right of the decimal point, I use `n % 1` to first convert the input value to have 0 on their unit digit, convert the result to a string, and then use `[2:]` to retrive everything starting from the third element of the string to obtain the all the digits of this input number. The example below demonstrates that the function returns the decimal expansion of π with 200 digits. 
+### To tackle 
+this problem, I start by working on the first helper function - which generates an arbitrary large expansion of a mathematical expression. After a quick internet search, I found that `mpmath` can help me solve this problem. `mpmath` is a Python library for real and complex floating-point arithmetic with arbitrary precision. After importing the `mpmath` library, I set `mp.dps = 200` to let my decimal expansion function to know that I want to compute and have the result show 50 digits of the input number `n`. The reason why I set this number to be 200 will be discussed later in the blog, specifically, in the section where I talk about the final function and testing. Since we only care about the decimal expansion of the input number, which are the digits to the right of the decimal point, I use `n % 1` to first convert the input value to have 0 on their unit digit, convert the result to a string, and then use `[2:]` to retrive everything starting from the third element of the string to obtain the all the digits of this input number. The example below demonstrates that the function returns the decimal expansion of π with 200 digits. 
 
 ```
 from mpmath import mp
@@ -41,7 +42,8 @@ deci_expan(mp.pi)
 ```
 
 
-The second part of the program is to write a function to check if an input number is a prime. As one of the classic leetcode problem, there definitely exists many ways to solve it. After trying out multiple ways of writing this function, including brute force, I was able to reach a solution with fastest computational speed.
+### The second part 
+of the program is to write a function to check if an input number is a prime. As one of the classic leetcode problem, there definitely exists many ways to solve it. After trying out multiple ways of writing this function, including brute force, I was able to reach a solution with fastest computational speed.
 
 To start, I first consider the edge cases. Prime numbers start from 2, so the function should return False for anyinput that is smaller than 2, and return True for the input 2. If the input is even and bigger than 2, then it cannot be prime. 
 
@@ -71,7 +73,8 @@ def isPrime(n):
 ```
 
 
-The last function to write before solving the problem is generating sliding windows of a specified width from a long iterable (e.g. a string representation of a number). The `sliding_windows` function below takes 2 elements, a string `s` of numbers, and specified width of the sliding windows - `width`. I first construct an empty list that will collect all sliding windows of substrings sliced from the input string of numbers. Then, in the loop, as long as the length of the sliding window is shorter than the length of the input string, the sliding operation continues. Starting from the first element of the string, the sliding operation slices a substring with the specified length from the input string, and appends itself to the list of all possible substrings. This function returns a list of all possible substrings all with the specified width. 
+### The last function 
+to write before solving the problem is generating sliding windows of a specified width from a long iterable (e.g. a string representation of a number). The `sliding_windows` function below takes 2 elements, a string `s` of numbers, and specified width of the sliding windows - `width`. I first construct an empty list that will collect all sliding windows of substrings sliced from the input string of numbers. Then, in the loop, as long as the length of the sliding window is shorter than the length of the input string, the sliding operation continues. Starting from the first element of the string, the sliding operation slices a substring with the specified length from the input string, and appends itself to the list of all possible substrings. This function returns a list of all possible substrings all with the specified width. 
 
 
 ```
@@ -88,7 +91,111 @@ def sliding_windows(s, width):
 ```
 
 
+Before I put these three helper functions together to solve the ultimate problem, I need to write some unit tests for my code to make sure that the code works correctly. This helps with maintaining and changing the code and debuging easily. 
+To test the decimal expansion function, the two cases I use in the assert function are π and e. After double checking with the calculator on the internet, this function, although may not have he most succinct style, does the job smoothly. 
+
+```
+def test_deci_expan():
+    """Tests if the function deci_expan generates the decimal expansion of input number"""
+    
+    assert deci_expan(mp.pi) == '14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196'
+    assert deci_expan(mp.e) == '71828182845904523536028747135266249775724709369995957496696762772407663035354759457138217852516642742746639193200305992181741359662904357290033429526059563073813232862794349076323382988075319525101901'
+
+if __name__ == "__main__":
+    test_deci_expan()
+    print("Everything passed")
+
+```
+```
+Everything passed
+```
+
+
+To test the checking prime number function. I use a negative number, 0, 1, 2, and a positive number as my edge cases to try to cover most of the possible cases. Everything seems to work as expected.
+
+```
+def test_isPrime():
+    """Tests if the function isPrime checks if an input integer is a prime number"""
+    
+    assert isPrime(23) is True, "Should be Ture"
+    assert isPrime(2) is True, "Should be True"
+    assert isPrime(0) is False, "Should be False"
+    assert isPrime(1) is False, "Should be False"
+    assert isPrime(-5) is False, "Should be False"
+    
+if __name__ == "__main__":
+    test_isPrime()
+    print("Everything passed")
+```
+```
+Everything passed
+```
+
+Lastly, to check the sliding windows function, I use 2 arbitrary length of string representation of numbers and 2 different widths I want the function to take as inputs. The function just as expected as well. 
+
+```
+def test_sliding_windows():
+    """Tests if the function sliding_windows returns the expected list of strings of number sequence"""
+
+    assert sliding_windows('1234567890', 8) == ['12345678', '23456789', '34567890'], "Should be ['12345678', '23456789', '34567890']"
+    assert sliding_windows('65876', 3) != ['658', '658', '658'], "Should be ['658', '587', '876']"
+
+if __name__ == "__main__":
+    test_sliding_windows()
+    print("Everything passed")
+```
+```
+Everything passed
+```
+
+
+### Finally, 
+I combine the three working functions together to build my final function `prime_exp` that takes two parameters - the input number (`num`) and the length of decimal expansions (`digit`). This final function generates the decimal expansion of the input number using the `deci_expan` function, creates a list of string representations of sliding windows with specified length using the `sliding_windows` function, checks each substring in that list using the `isPrime` function, and returns the first string representation of the prime decimal expansion of the input number with specific length. 
+
+```
+def prime_exp(num, digit):
+    """Returns the first n-digit (specified by 'digit') prime in the decimal expansion of input interger (specified by 'num')."""
+    
+    decimal_expansion = deci_expan(num)
+    strings = sliding_windows(decimal_expansion, digit)
+
+    for string in strings:
+        if isPrime(int(string)):
+            break
+
+    return string
+```
+
+Same procedures above for the helper functions, I also write unit tests to check if my final function works smoothly with no bugs. Looks like it is able to return the correct results of the first 4-digit prime decimal expansion of π and the first 10-digit prime decimal expansion of e without problem. 
+
+```
+def test_prime_exp():
+    """Tests if the function sliding_windows returns the expected list of strings of number sequence"""
+
+    assert prime_exp(mp.pi, 4) == '4159', "Should be '4159'"
+    assert prime_exp(mp.e, 10) == '7427466391', "Should be '7427466391'"
+    
+if __name__ == "__main__":
+    test_prime_exp()
+    print("Everything passed")
+```
+```
+Everything passed
+```
+
+### Last but not least, 
+it is time to solve the given problem with my final function. Below returns the result of the string representation of the first 10-digit prime in the decimal expansion of 17π:
+
+```
+prime_exp(17 * mp.pi, 10)
+```
+```
+'8649375157'
+```
+
+
 The complete code can also be found in [this notebook](https://github.com/jenniesun/biostats-blog/blob/main/assignment2.ipynb).
+
 
 
 
@@ -169,6 +276,9 @@ def find_fac_sum(n):
 
 find_fac_sum(50000) # 40730
 ```
+
+It was a good learning process working on each line of code, debugging, and testing on each of the function until they work as expected. Coding, as we all know, is an iterative process that involves trials and errors all the time. It is because of these constant practices that teach us the concepts behind those functions and loops and that make us efficient coders. 
+
 
 
 ### Euler Project Problem 145 - How many reversible numbers are there below one-billion? 
