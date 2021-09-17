@@ -14,6 +14,7 @@ _The first 5 digits in the decimal expansion of π are 14159. The first 4-digit 
 
 _Now use these helper functions to write the function that you need. Write a unit test for this final function, given that the first 10-digit prime in the expansion e is 7427466391. Finally, solve the given problem._
 
+![](./number_theory.jpeg)
 
 
 ### To tackle 
@@ -89,6 +90,8 @@ def sliding_windows(s, width):
             break
     return result_lst
 ```
+
+![](./math.jpeg)
 
 
 Before I put these three helper functions together to solve the ultimate problem, I need to write some unit tests for my code to make sure that the code works correctly. This helps with maintaining and changing the code and debuging easily. 
@@ -183,6 +186,8 @@ if __name__ == "__main__":
 Everything passed
 ```
 
+
+
 ### Last but not least, 
 it is time to solve the given problem with my final function. Below returns the result of the string representation of the first 10-digit prime in the decimal expansion of 17π:
 
@@ -194,7 +199,15 @@ prime_exp(17 * mp.pi, 10)
 ```
 
 
+### In conclusion, it was a good learning process working on each line of code, debugging, and testing on each of the function until they work as expected. Coding, as we all know, is an iterative process that involves trials and errors all the time. It is because of these constant practices that teach us the concepts behind those functions and loops and that make us efficient coders. 
+
+![](./math2.webp)
+
+
+
 The complete code can also be found in [this notebook](https://github.com/jenniesun/biostats-blog/blob/main/assignment2.ipynb).
+
+
 
 
 
