@@ -34,9 +34,57 @@ def deci_expan(n):
 ```
 
 ```
+# decimal expansion of π with 200 digits
 deci_expan(mp.pi)
 
 '14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196'
+```
+
+
+The second part of the program is to write a function to check if an input number is a prime. As one of the classic leetcode problem, there definitely exists many ways to solve it. After trying out multiple ways of writing this function, including brute force, I was able to reach a solution with fastest computational speed.
+
+To start, I first consider the edge cases. Prime numbers start from 2, so the function should return False for anyinput that is smaller than 2, and return True for the input 2. If the input is even and bigger than 2, then it cannot be prime. 
+
+Going over all integers up to the limit in the loop would be inefficient. Instead of iterating from 1 to the limit, I use a trick to reduce the number of divisors in the for loop. To test for divisors, I only need to test the integers up to the square root of n. This is because the products of divisors before and after the square root of the integer n are repetitive. For example, 18 = 1 x 18 = 2 x 9 = 3 x 6, but can alo be written as 18 = 6 x 3 = 9 x 2 = 19 x 1. Therefore, for the number of 18, I only need to test up to the square root of 18 in my for loop to cover all possible divisors. This trick is summarized in the `max_divisor` line of code below. In the event the square root is not a whole number, we will just round down using the `floor` function. Since we want to be sure to test this number, we have to add 1 to the range function. Since we will be taking square roots, we need to import the math module. 
+
+After I take care of the edge cases and all even numbers greater 2, the only numbers left to check are odd numbers greater than 1. If the input is odd, it's a waste to check even divisors. Therefore, when I range of the possible divisors, I add a third parameter, a step value. So this range will start at 3, and have all odd numbers up to the limit. This should eliminate roughly half of all division operations. This function does the job by checking if an input number is prime or not, and its unit test will be demonstrated in the following section. 
+
+```
+import math
+
+def isPrime(n):
+    """Return 'True' if 'n' is a prime number". False otherwise."""
+    
+    # check off edge cases
+    if n <= 1:
+        return False # 0, 1 and negative numbers are not prime
+    if n == 2:
+        return True # 2 is prime
+    if n > 2 and n % 2 == 0:
+        return False # all even numbers > 2 are not prime 
+    
+    max_divisor = math.floor(math.sqrt(n))
+    for i in range(3, max_divisor + 1, 2): # skip every even number
+        if n % i == 0:
+            return False
+    return True
+```
+
+
+The last function to write before solving the problem is generating sliding windows of a specified width from a long iterable (e.g. a string representation of a number). The `sliding_windows` function below takes 2 elements, a string `s` of numbers, and specified width of the sliding windows - `width`. I first construct an empty list that will collect all sliding windows of substrings sliced from the input string of numbers. Then, in the loop, as long as the length of the sliding window is shorter than the length of the input string, the sliding operation continues. Starting from the first element of the string, the sliding operation slices a substring with the specified length from the input string, and appends itself to the list of all possible substrings. This function returns a list of all possible substrings all with the specified width. 
+
+
+```
+def sliding_windows(s, width):
+    """Returns a window of string representations 's' specified by 'width'"""
+    
+    result_lst = []
+    for p in range(len(s) + 1):    
+        while (p + width) <= len(s): # keep iterating as long as the window length < input string length
+            result = s[p:p+width]
+            result_lst.append(result)
+            break
+    return result_lst
 ```
 
 
