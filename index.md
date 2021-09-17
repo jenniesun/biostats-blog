@@ -17,8 +17,8 @@ _Now use these helper functions to write the function that you need. Write a uni
 ![](./number_theory.jpeg)
 
 
-### To tackle 
-this problem, I start by working on the first helper function - which generates an arbitrary large expansion of a mathematical expression. After a quick internet search, I found that `mpmath` can help me solve this problem. `mpmath` is a Python library for real and complex floating-point arithmetic with arbitrary precision. After importing the `mpmath` library, I set `mp.dps = 200` to let my decimal expansion function to know that I want to compute and have the result show 50 digits of the input number `n`. The reason why I set this number to be 200 will be discussed later in the blog, specifically, in the section where I talk about the final function and testing. Since we only care about the decimal expansion of the input number, which are the digits to the right of the decimal point, I use `n % 1` to first convert the input value to have 0 on their unit digit, convert the result to a string, and then use `[2:]` to retrive everything starting from the third element of the string to obtain the all the digits of this input number. The example below demonstrates that the function returns the decimal expansion of π with 200 digits. 
+### To tackle this problem, 
+I start by working on the first helper function - which generates an arbitrary large expansion of a mathematical expression. After a quick internet search, I found that `mpmath` can help me solve this problem. `mpmath` is a Python library for real and complex floating-point arithmetic with arbitrary precision. After importing the `mpmath` library, I set `mp.dps = 200` to let my decimal expansion function to know that I want to compute and have the result show 200 digits of the input number `n`. The reason why I set this number to be 200 will be discussed towards the end of the blog. Since we only care about the decimal expansion of the input number, which are the digits to the right of the decimal point, I use `n % 1` to first convert the input value to have 0 on their unit digit, convert the result to a string, and then use `[2:]` to retrive everything starting from the third element of the string to obtain the all the digits of this input number. The example below demonstrates that the function returns the decimal expansion of π with 200 digits. 
 
 ```
 from mpmath import mp
@@ -43,8 +43,8 @@ deci_expan(mp.pi)
 ```
 
 
-### The second part 
-of the program is to write a function to check if an input number is a prime. As one of the classic leetcode problem, there definitely exists many ways to solve it. After trying out multiple ways of writing this function, including brute force, I was able to reach a solution with fastest computational speed.
+### For the second helper function, 
+I need to check if an input number is a prime. As one of the classic leetcode problem, there definitely exists many ways to solve it. After trying out multiple ways of writing this function, including brute force, I was able to reach a solution with fastest computational speed.
 
 To start, I first consider the edge cases. Prime numbers start from 2, so the function should return False for anyinput that is smaller than 2, and return True for the input 2. If the input is even and bigger than 2, then it cannot be prime. 
 
@@ -74,8 +74,8 @@ def isPrime(n):
 ```
 
 
-### The last function 
-to write before solving the problem is generating sliding windows of a specified width from a long iterable (e.g. a string representation of a number). The `sliding_windows` function below takes 2 elements, a string `s` of numbers, and specified width of the sliding windows - `width`. I first construct an empty list that will collect all sliding windows of substrings sliced from the input string of numbers. Then, in the loop, as long as the length of the sliding window is shorter than the length of the input string, the sliding operation continues. Starting from the first element of the string, the sliding operation slices a substring with the specified length from the input string, and appends itself to the list of all possible substrings. This function returns a list of all possible substrings all with the specified width. 
+### Before I can solve the problem,
+I need to write one last function to generate sliding windows of a specified width from a long iterable (e.g. a string representation of a number). The `sliding_windows` function below takes 2 elements, a string `s` of numbers, and specified width of the sliding windows - `width`. I first construct an empty list that will collect all sliding windows of substrings sliced from the input string of numbers. Then, in the loop, as long as the length of the sliding window is shorter than the length of the input string, the sliding operation continues. Starting from the first element of the string, the sliding operation slices a substring with the specified length from the input string, and appends itself to the list of all possible substrings. This function returns a list of all possible substrings all with the specified width. 
 
 
 ```
@@ -198,20 +198,22 @@ prime_exp(17 * mp.pi, 10)
 '8649375157'
 ```
 
+As I mentioned before in the first helper function `deci_expan` section, I specify `mp.dps = 200` to use 200 as the number of digits for decimal expansion, which is not an arbitrary choice. The reason why I use the number 200 as the number of digits to expand for this question is that after trying with different options, starting from 100 up to 1000, the function is able to return the correct result when the number of digits is set to be around 200, meaning that the first 10-digit prime expansion of both π and 17π appear in the first 200 digits of decimal expansion of the two numbers. Exploring scalable ways to check the number of digits needed would be the next step of the coding journey.  
 
-### In conclusion, it was a good learning process working on each line of code, debugging, and testing on each of the function until they work as expected. Coding, as we all know, is an iterative process that involves trials and errors all the time. It is because of these constant practices that teach us the concepts behind those functions and loops and that make us efficient coders. 
+
+### In conclusion, 
+it was a good learning process working on each line of code, debugging, and testing on each of the function until they work as expected. Coding, as we all know, is an iterative process that involves trials and errors all the time. It is because of these constant practices that teach us the concepts behind those functions and loops and that make us efficient coders. 
 
 ![](./math2.webp)
-
 
 
 The complete code can also be found in [this notebook](https://github.com/jenniesun/biostats-blog/blob/main/assignment2.ipynb).
 
 
 
-
-
-
+<br /> 
+<br /> 
+<br /> 
 
 
 ## Homework Project 1 - Math is Fun
