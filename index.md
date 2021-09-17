@@ -210,10 +210,8 @@ it was a good learning process working on each line of code, debugging, and test
 The complete code can also be found in [this notebook](https://github.com/jenniesun/biostats-blog/blob/main/assignment2.ipynb).
 
 
+<hr/>
 
-<br /> 
-<br /> 
-<br /> 
 
 
 ## Homework Project 1 - Math is Fun
