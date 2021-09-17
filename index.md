@@ -1,8 +1,8 @@
 ## Homework Project 2 - Number Theory and a Google Recruitment Puzzle
 
-Find the first 10-digit prime in the decimal expansion of 17π.
+_Find the first 10-digit prime in the decimal expansion of 17π._
 
-The first 5 digits in the decimal expansion of π are 14159. The first 4-digit prime in the decimal expansion of π are 4159. You are asked to find the first 10-digit prime in the decimal expansion of 17π. First solve sub-problems (divide and conquer):
+_The first 5 digits in the decimal expansion of π are 14159. The first 4-digit prime in the decimal expansion of π are 4159. You are asked to find the first 10-digit prime in the decimal expansion of 17π. First solve sub-problems (divide and conquer):_
 
 * Write a function to generate an arbitrary large expansion of a mathematical expression like π. Hint: You can use the standard library decimal or the 3rd party library sympy to do this
 
@@ -12,10 +12,32 @@ The first 5 digits in the decimal expansion of π are 14159. The first 4-digit p
 
 * Write unit tests for each of these three functions. You are encouraged, but not required, to try test-driven development https://en.wikipedia.org/wiki/Test-driven_development.
 
-Now use these helper functions to write the function that you need. Write a unit test for this final function, given that the first 10-digit prime in the expansion e is 7427466391. Finally, solve the given problem.
+_Now use these helper functions to write the function that you need. Write a unit test for this final function, given that the first 10-digit prime in the expansion e is 7427466391. Finally, solve the given problem._
 
 
 
+To tackle this problem, I start by working on the first helper function - which generates an arbitrary large expansion of a mathematical expression. After a quick internet search, I found that `mpmath` can help me solve this problem. `mpmath` is a Python library for real and complex floating-point arithmetic with arbitrary precision. After importing the `mpmath` library, I set `mp.dps = 200` to let my decimal expansion function to know that I want to compute and have the result show 50 digits of the input number `n`. The reason why I set this number to be 200 will be discussed later in the blog, specifically, in the section where I talk about the final function and testing. Since we only care about the decimal expansion of the input number, which are the digits to the right of the decimal point, I use `n % 1` to first convert the input value to have 0 on their unit digit, convert the result to a string, and then use `[2:]` to retrive everything starting from the third element of the string to obtain the all the digits of this input number. The example below demonstrates that the function returns the decimal expansion of π with 200 digits. 
+
+```
+from mpmath import mp
+
+def deci_expan(n):
+    """Generates a large expansion of a mathematical expression of input number 'n'"""
+    
+    # set number of digits
+    mp.dps = 200
+    
+    # generate a string of decimal expansion of input number
+    decimal_expansion = str(n % 1)[2:] 
+    
+    return decimal_expansion
+```
+
+```
+deci_expan(mp.pi)
+
+'14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196'
+```
 
 
 The complete code can also be found in [this notebook](https://github.com/jenniesun/biostats-blog/blob/main/assignment2.ipynb).
