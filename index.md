@@ -1,9 +1,6 @@
 ## Project 3 - Creating effective visualizations using best practices
 
-_Create 3 informative and interactive visualizations about malaria using Python in a Jupyter notebook, starting with the data sets at https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-11-13._
-
-
-### 3 Datasets:
+_Create 3 informative and interactive visualizations about malaria using Python in a Jupyter notebook, starting with the data sets at [this Github repository] (https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-11-13).
 
 * `malaria_inc.csv` - Malaria incidence by country for all ages across the world across time
 * `malaria_deaths.csv` - Malaria deaths by country for all ages across the world and time.
@@ -24,9 +21,43 @@ malaria_deaths_age = pd.read_csv("./malaria_deaths_age.csv", index_col=0)
 ```
 malaria_inc.head()
 ```
+![](./malaria_inc_head.png)
 ```
 malaria_deaths.head()
 ```
+![](./malaria_deaths_head.png)
+
+```
+# data cleaning/preprocessing - merge malaria deaths and malaria incidence data
+
+df_merged = pd.merge(malaria_deaths, malaria_inc, how='left',
+        left_on=['Entity', 'Year'], right_on=['Entity', 'Year'])
+df_merged.drop(columns=['Code_y'], inplace=True)
+df_merged.rename(columns={'Code_x':'Code', 
+                         'Deaths - Malaria - Sex: Both - Age: Age-standardized (Rate) (per 100,000 people)':'Deaths',
+                         'Incidence of malaria (per 1,000 population at risk) (per 1,000 population at risk)':'Incidence'}, inplace=True)
+df_merged = df_merged.fillna(method='ffill')
+df_merged = df_merged.fillna(method='bfill')
+```
+
+```# group deaths and incidence data by year
+df_merged_grouped = df_merged.groupby('Year')['Deaths', 'Incidence'].sum().reset_index()
+
+# prepare for plotting by melting the dataframe 
+df_grouped_melted = df_merged_grouped.melt(id_vars=['Year'],
+                      value_vars=['Deaths', 'Incidence'],
+                      var_name='Status', value_name='Count')
+```
+
+```
+# plot the figure
+fig = px.bar(df_grouped_melted, x='Year', y='Count', color='Status', 
+             color_discrete_sequence=['firebrick', 'cadetblue'],
+             title='Worldwide Malaria Incidence vs Deaths Counts (1990-2017)')
+fig.show()
+```
+
+
 
 
 
