@@ -1,4 +1,39 @@
-## Homework Project 2 - Number Theory and a Google Recruitment Puzzle
+## Project 3 - Creating effective visualizations using best practices
+
+_Create 3 informative and interactive visualizations about malaria using Python in a Jupyter notebook, starting with the data sets at https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-11-13._
+
+
+### 3 Datasets:
+
+* `malaria_inc.csv` - Malaria incidence by country for all ages across the world across time
+* `malaria_deaths.csv` - Malaria deaths by country for all ages across the world and time.
+* `malaria_deaths_age.csv` - Malaria deaths by age across the world and time.
+
+```
+# import libraries
+import pandas as pd
+import numpy as np
+import plotly.express as px
+
+# load the data
+malaria_inc = pd.read_csv("./malaria_inc.csv")
+malaria_deaths = pd.read_csv("./malaria_deaths.csv")
+malaria_deaths_age = pd.read_csv("./malaria_deaths_age.csv", index_col=0)
+```
+
+```
+malaria_inc.head()
+```
+```
+malaria_deaths.head()
+```
+
+
+
+<hr/>
+
+
+## Project 2 - Number Theory and a Google Recruitment Puzzle
 
 _Find the first 10-digit prime in the decimal expansion of 17π._
 
@@ -214,7 +249,7 @@ The complete code can also be found in [this notebook](https://github.com/jennie
 
 
 
-## Homework Project 1 - Math is Fun
+## Project 1 - Math is Fun
 
 Solve 3 problems from the Euler Project using Python. Of the 3 problems, one must have been solved by fewer than 25,000 people, 1 fewer than 100,000 people and one fewer than 500,000 people. Write a function for each problem, and use numpy-stple docstrings to annotate each function. Below describes my solutions and how I approached each problem.
 
