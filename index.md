@@ -6,6 +6,10 @@ _Create 3 informative and interactive visualizations about malaria using Python 
 * `malaria_deaths.csv` - Malaria deaths by country for all ages across the world and time.
 * `malaria_deaths_age.csv` - Malaria deaths by age across the world and time.
 
+This week's task is to generate visualizations with the malaria data, specifically, wth the 3 available datasets listed above. As someone who enjoys exploring data with visualizaion, this is an exciting task as data visualization is the laguage of data scientists. 
+
+To start, I imported the necessary libraries needed to do data cleaning, preprocessing, as well as plotting. I decided to use Plotly as my main visualization library for this task because it is very powerful at explaining and exploring data, and more importantly, it provides interactive data visualization. With the feature of interactivity, Plotly allows user to play with graphs on display, which allows for a better storytelling experience. This is extreamly helpful because data visualization plays a huge part in communicating data, and being able to use the interactive tools Plotly provides, users can understand complicated data more easily and more intuitively. 
+
 ```
 # import libraries
 import pandas as pd
@@ -18,6 +22,8 @@ malaria_deaths = pd.read_csv("./malaria_deaths.csv")
 malaria_deaths_age = pd.read_csv("./malaria_deaths_age.csv", index_col=0)
 ```
 
+By observing the columns that both `malaria_inc` and `malaria_deaths` have, I noticed that they do have fairly similar structure. The main difference is that in the malaria incidence dataset, the incidence count was collected only starting from 2000 and on a 5-year cadence, while in the malaria deaths dataset, the deaths count was collected starting from 1990 and on a yearly basis. My inituition after seeing this situation is to combine these 2 datasets and to see how the incidence count compares to the deaths count. 
+
 ```
 malaria_inc.head()
 ```
@@ -26,6 +32,8 @@ malaria_inc.head()
 malaria_deaths.head()
 ```
 ![](./malaria_deaths_head.png)
+
+In order to combine these 2 datasets and extract the information needed to create meaningful plot, I first merged these two datasets based on `Entity` and `Year`. To preserve most of the information possible, I performed a left merge on the death count dataset since it has more granular entries. I then dropped the duplicate column as well as renamed the death count and incidence count columns to tidy up the dataframes. Since the incidence count only has data on a 5-year basis, I perfoemd missing value imputation first using forward fill on data starting from 2000, and then using backward fill for the data prior to 2000 to ensure the data imputed are as close to the real situation as possible. 
 
 ```
 # data cleaning/preprocessing - merge malaria deaths and malaria incidence data
@@ -42,6 +50,8 @@ df_merged = df_merged.fillna(method='ffill')
 df_merged = df_merged.fillna(method='bfill')
 ```
 
+I then grouped the deaths and incidence count data by year and melted the dataframes so it is ready for plotting. 
+
 ```# group deaths and incidence data by year
 df_merged_grouped = df_merged.groupby('Year')['Deaths', 'Incidence'].sum().reset_index()
 
@@ -51,6 +61,8 @@ df_grouped_melted = df_merged_grouped.melt(id_vars=['Year'],
                       var_name='Status', value_name='Count')
 ```
 
+The plot below shows the worldwide malaria incidence vs deaths count from 1990 to 2017. The red bars represent death counts in each year and the teal bars represent the incidence count. From this plot, we can see that prior to 2000, both deaths and incidence counts stayed relatively unchanged. However, from 1999 to 2000 there was a big jump of incidence count and a slight jump of deaths count, and this trend stayed for 5 years. Then both counts started to decrease constantly and were at their lowest level on the last year of the statistical period (2017). 
+
 ```
 # plot the figure
 fig = px.bar(df_grouped_melted, x='Year', y='Count', color='Status', 
@@ -58,7 +70,6 @@ fig = px.bar(df_grouped_melted, x='Year', y='Count', color='Status',
              title='Worldwide Malaria Incidence vs Deaths Counts (1990-2017)')
 fig.show()
 ```
-{% include figure.html %}
 
 
 
