@@ -108,6 +108,9 @@ As expected, comparing to the other age group, the trend that the majority of ma
 To conclude, from a data visualization standpoint, it was fun to explore the Plotly library for this project. Since Plotly is based on Pandas, I was able to perform data transformation before plotting the result easily. There are so much more that you can do with this powerful library, and I look forward to exploring many more upcoming story telling opportunities using this visualization tool. 
 
 
+The complete code can also be found in [this notebook](https://github.com/jenniesun/biostats-blog/blob/main/assignment3.ipynb).
+
+
 <hr/>
 
 
