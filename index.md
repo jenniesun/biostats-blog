@@ -8,6 +8,8 @@ _Create 3 informative and interactive visualizations about malaria using Python 
 
 This week's task is to generate visualizations with the malaria data, specifically, wth the 3 available datasets listed above. As someone who enjoys exploring data with visualizaion, this is an exciting task as data visualization is the laguage of data scientists. 
 
+![](./Data-Visualization.jpeg)
+
 To start, I imported the necessary libraries needed to do data cleaning, preprocessing, as well as plotting. I decided to use Plotly as my main visualization library for this task because it is very powerful at explaining and exploring data, and more importantly, it provides interactive data visualization. With the feature of interactivity, Plotly allows user to play with graphs on display, which allows for a better storytelling experience. This is extreamly helpful because data visualization plays a huge part in communicating data, and being able to use the interactive tools Plotly provides, users can understand complicated data more easily and more intuitively. 
 
 ```
