@@ -1,6 +1,6 @@
 ## Project 3 - Creating Effective Visualizations Using Best Practices
 
-_Create 3 informative and interactive visualizations about malaria using Python in a Jupyter notebook, starting with the data sets at [this Github repository] (https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-11-13).
+_Create 3 informative and interactive visualizations about malaria using Python in a Jupyter notebook, starting with the data sets at [this Github repository](https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-11-13)._
 
 * `malaria_inc.csv` - Malaria incidence by country for all ages across the world across time
 * `malaria_deaths.csv` - Malaria deaths by country for all ages across the world and time.
@@ -52,7 +52,8 @@ df_merged = df_merged.fillna(method='bfill')
 
 I then grouped the deaths and incidence count data by year and melted the dataframes so it is ready for plotting. 
 
-```# group deaths and incidence data by year
+```
+# group deaths and incidence data by year
 df_merged_grouped = df_merged.groupby('Year')['Deaths', 'Incidence'].sum().reset_index()
 
 # prepare for plotting by melting the dataframe 
@@ -70,9 +71,10 @@ fig = px.bar(df_grouped_melted, x='Year', y='Count', color='Status',
              title='Worldwide Malaria Incidence vs Deaths Counts (1990-2017)')
 fig.show()
 ```
+
 ![](./malaria_inc_vs_deaths.png)
 
-Then I moved on to the last dataset, which documents the malaria deaths by age across the world and time. Same procedure as above, I started the analysis by examine the columns of the data, and decided that I would like to look at the distribution malaria deaths count in different age groups. A pie chart would be an appropriate visualization to use here. The code below contains data preprosessing and plotting. 
+Then I moved on to the other dataset, which documents the malaria deaths by age across the world and time. Same procedure as above, I started the analysis by examine the columns of the data, and decided that I would like to look at the distribution malaria deaths count in different age groups. A pie chart would be an appropriate visualization to use here. The code below contains data preprosessing and plotting. 
 
 ```
 # group malaria death age data by age group and year
@@ -89,6 +91,7 @@ fig = px.pie(deaths_by_age, values='deaths', names='age_group',
              title='Worldwide Malaria Deaths by Age Group (1990-2017)')
 fig.show()
 ```
+
 From this plot below, we can observe that across the entire world, over 70% of malaria death falls under the Under 5 age group. Let's also see how this trend evolves across years, which was displayed by a stacked area chart below. 
 
 ![](./malaria_deaths_by_age.png)
