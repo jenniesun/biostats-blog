@@ -2,6 +2,8 @@
 
 _Create 3 informative and interactive visualizations about malaria using Python in a Jupyter notebook, starting with the data sets at [this Github repository](https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-11-13)._
 
+Datasets used for this project:
+
 * `malaria_inc.csv` - Malaria incidence by country for all ages across the world across time
 * `malaria_deaths.csv` - Malaria deaths by country for all ages across the world and time.
 * `malaria_deaths_age.csv` - Malaria deaths by age across the world and time.
