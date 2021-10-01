@@ -58,7 +58,7 @@ fig = px.bar(df_grouped_melted, x='Year', y='Count', color='Status',
              title='Worldwide Malaria Incidence vs Deaths Counts (1990-2017)')
 fig.show()
 ```
-
+{% include figure.html %}
 
 
 
