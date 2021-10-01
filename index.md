@@ -29,13 +29,15 @@ malaria_deaths.head()
 
 ```
 # data cleaning/preprocessing - merge malaria deaths and malaria incidence data
-
 df_merged = pd.merge(malaria_deaths, malaria_inc, how='left',
         left_on=['Entity', 'Year'], right_on=['Entity', 'Year'])
 df_merged.drop(columns=['Code_y'], inplace=True)
 df_merged.rename(columns={'Code_x':'Code', 
                          'Deaths - Malaria - Sex: Both - Age: Age-standardized (Rate) (per 100,000 people)':'Deaths',
-                         'Incidence of malaria (per 1,000 population at risk) (per 1,000 population at risk)':'Incidence'}, inplace=True)
+                         'Incidence of malaria (per 1,000 population at risk) (per 1,000 population at risk)':'Incidence'}, 
+                 inplace=True)
+
+# missing value imputation
 df_merged = df_merged.fillna(method='ffill')
 df_merged = df_merged.fillna(method='bfill')
 ```
