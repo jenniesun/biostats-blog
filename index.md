@@ -1,3 +1,16 @@
+## Project 4 - Is there life after graduate school? - A dashboard visualization of PhD degrees awarded in the US
+
+_Source data: [Science and Engineering PhDs awarded in the US](https://ncses.nsf.gov/pubs/nsf19301/data)._
+
+![](byField.gif)
+
+![](bySubField.gif)
+
+
+
+
+
+
 ## Project 3 - Creating Effective Visualizations Using Best Practices
 
 _Create 3 informative and interactive visualizations about malaria using Python in a Jupyter notebook, starting with the data sets at [this Github repository](https://github.com/rfordatascience/tidytuesday/tree/master/data/2018/2018-11-13)._
