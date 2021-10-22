@@ -1,6 +1,11 @@
-## Project 4 - Is there life after graduate school? - A dashboard visualization of PhD degrees awarded in the US
+## Project 4 - A dashboard visualization of PhD degrees awarded in the US
 
 _Source data: [Science and Engineering PhDs awarded in the US](https://ncses.nsf.gov/pubs/nsf19301/data)._
+
+Dash is a low-code framework for building data apps in Python, Julia, R, MATLAB, and F#. I have always been curious about what I can do with this tool so at the time I was introduced this task, which is to build a visualization dashboard using the NSF doctorate data, I decided to use Dash to complete the task. 
+
+The dataset used is from the NSF Science & Engineering Doctorate page. Specifically, I explored a few interesting aspects using the 7th table on the list - _Doctorate-granting institutions, by state or location and major science and engineering fields of study: 2017_. 
+
 
 ![](byField.gif)
 
