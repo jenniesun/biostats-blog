@@ -2,6 +2,8 @@
 
 _Source data: [Science and Engineering PhDs awarded in the US](https://ncses.nsf.gov/pubs/nsf19301/data)._
 
+![](dash.png)
+
 Dash is a low-code framework for building data apps in Python, Julia, R, MATLAB, and F#. I have always been curious about what I can do with this tool because it is known for its customizable interactive data visualization. Therefore, at the time I was introduced this task, which is to build a visualization dashboard using the NSF doctorate data, I decided to use Dash to complete the task.  
 
 ### The Data
