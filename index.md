@@ -16,7 +16,17 @@ When loading this dataset in jupyter, the first thing I noticed is that I am dea
 ![](df_3levels.png)
 
 ### Dashboard Design
-Since I am interested to see the number of doctorate degrees in science and engineering awarded in each state in an interactive fashion, I decided to make a map of the US states, where users can hover over each state to see the specific statistics. To make it more insightful, I also designed the dashboard to have the ability to allow users to choose the specific field and sub-field they want to look at. When it comes to the visualization for sub-field, in order to increase the diversity of plotting of plot types, I used a bar chart sorted descending by the number of degrees awareded by each sub-field in each state. These actions can be created easily using callback functions in dash, which are functions that are automatically called by Dash whenever an input component's property changes, in order to update some property in another component (the output).
+Since I am interested to see the number of doctorate degrees in science and engineering awarded in each state, I start my analysis by plotting out a barchart featuring both fields, with the y axis being the number of degrees awareded, and x axis being the specific state. The plot below shows the distribution of the statistics in a barchart fashion. 
+
+![](phd_byField.png)
+
+When it comes to number of doctorate degrees awareded by sub-field, this plot becomes more messy and less insighful: 
+
+![](phd_bySubField.png)
+
+The EDA provides a general idea of how the data looks and how the statistics is distributed at different level of aggregation, which lays the foundation of moving the visualization to a a dashboard project. In order to tell the stories in a more interactive fashion, I decided to make a map of the US states, where users can hover over each state to see the specific statistics.
+
+To make it more insightful, I also designed the dashboard to have the ability to allow users to choose the specific field and sub-field they want to look at. When it comes to the visualization for sub-field, in order to increase the diversity of plotting of plot types, I used a bar chart sorted descending by the number of degrees awareded by each sub-field in each state. These actions can be created easily using callback functions in dash, which are functions that are automatically called by Dash whenever an input component's property changes, in order to update some property in another component (the output).
 
 Below is a gif representation of the map described. As we can see, when hovering over a specific state, it shows the total number of doctorate degrees awarded in that state, and this number varies depending on the field - Science or Engineering - choosen by the user. From the color gradient shown on the map, we can clearing see that California, shown in bright yellow, has the highest number of doctorate degrees awarded in total. 
 
