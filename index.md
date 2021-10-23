@@ -24,7 +24,7 @@ Since I am interested to see the number of doctorate degrees in science and engi
 
 When it comes to number of doctorate degrees awareded by sub-field, this plot becomes more messy and less insighful: 
 
-![](phd_bySubField.png)
+![](phd_bySubfield.png)
 
 The EDA provides a general idea of how the data looks and how the statistics is distributed at different level of aggregation, which lays the foundation of moving the visualization to a a dashboard project. In order to tell the stories in a more interactive fashion, I decided to make a map of the US states, where users can hover over each state to see the specific statistics.
 
