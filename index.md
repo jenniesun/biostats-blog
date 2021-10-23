@@ -2,17 +2,37 @@
 
 _Source data: [Science and Engineering PhDs awarded in the US](https://ncses.nsf.gov/pubs/nsf19301/data)._
 
-Dash is a low-code framework for building data apps in Python, Julia, R, MATLAB, and F#. I have always been curious about what I can do with this tool so at the time I was introduced this task, which is to build a visualization dashboard using the NSF doctorate data, I decided to use Dash to complete the task. 
+Dash is a low-code framework for building data apps in Python, Julia, R, MATLAB, and F#. I have always been curious about what I can do with this tool because it is known for its customizable interactive data visualization. Therefore, at the time I was introduced this task, which is to build a visualization dashboard using the NSF doctorate data, I decided to use Dash to complete the task.  
 
-The dataset used is from the NSF Science & Engineering Doctorate page. Specifically, I explored a few interesting aspects using the 7th table on the list - _Doctorate-granting institutions, by state or location and major science and engineering fields of study: 2017_. 
+### The Data
 
+The dataset used is from the NSF Science & Engineering Doctorate page. The tables on the NFS website present detailed data on the demographic characteristics, educational history, sources of financial support, and postgraduation plans of doctorate recipients.  Specifically, I explored a few interesting aspects using the 7th table on the list - _Doctorate-granting institutions, by state or location and major science and engineering fields of study: 2017_.
+
+This dataset gives a straightforward view of the number of doctorate degrees granted in science and engineering related fields in each university in the US. The rows represent the universities, which are aggregated by state. The columns have 3 levels: level one has 2 categories: science and engineering, as the umbrella terms for the subsequency fields. Level 2 contains the sub-field of those two broaders terms (e.g. Life sciencecs and Physical sciences and earth sciences under Science). Level 3 drills down to the specific major that falls under each of the sub-field. 
+
+### Data Wrangling
+When loading this dataset in jupyter, the first thing I noticed is that I am dealing with a multi-index dataframe with the specific universities on the rows. Therfore, I performed a transformation on the dataframe to flip the rows and columns for plotting purposes. I then flattened the row aggregations so that the field and sub-field categories are assigned to each row of data (unit of observtion). Since the the statistics at the university level may not provide much insights, I aggregated the data to the state level, which reduced the number of columns. The screenshot below shows a temporary dataframe that exhibitis 3 levels of field, with number of doctorate degrees awarded across states. 
+
+![](df_3levels.png)
+
+### Dashboard Design
+Since I am interested to see the number of doctorate degrees in science and engineering awarded in each state in an interactive fashion, I decided to make a map of the US states, where users can hover over each state to see the specific statistics. To make it more insightful, I also designed the dashboard to have the ability to allow users to choose the specific field and sub-field they want to look at. When it comes to the visualization for sub-field, in order to increase the diversity of plotting of plot types, I used a bar chart sorted descending by the number of degrees awareded by each sub-field in each state. These actions can be created easily using callback functions in dash, which are functions that are automatically called by Dash whenever an input component's property changes, in order to update some property in another component (the output).
+
+Below is a gif representation of the map described. As we can see, when hovering over a specific state, it shows the total number of doctorate degrees awarded in that state, and this number varies depending on the field - Science or Engineering - choosen by the user. From the color gradient shown on the map, we can clearing see that California, shown in bright yellow, has the highest number of doctorate degrees awarded in total. 
 
 ![](byField.gif)
 
+Below is a gif representation of the bar chart described. The bar chart statistics varies depending on the sub field chosen by the user. In consistent with the map result above, for all the subfield chosen, California shows a dominating number of doctorate degrees awarded comparing to the rest of the states. 
+
 ![](bySubField.gif)
 
+### Ending Notes
+Dash is a simple tool to use when building data visualization apps. In the future, I would also like to explore other types of plotting options as well as different confunctions using this tool for other story telling projects to find interesting insights within the seemingly messy data. 
+
+The complete python code can be found in [this file](https://github.com/jenniesun/biostats-blog/blob/main/app.py).
 
 
+<hr/>
 
 
 
