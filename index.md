@@ -2,6 +2,8 @@
 
 Note: Original images from https://www.insectimages.org/index.cfm. In this blog, I trained a deep learning model to classify beetles, cockroaches and dragonflies using these images, and explained how the neural network classified the images using SHapley Additive exPlanations.
 
+<hr/>
+
 ## Project 4 - A dashboard visualization of PhD degrees awarded in the US
 
 _Source data: [Science and Engineering PhDs awarded in the US](https://ncses.nsf.gov/pubs/nsf19301/data)._
