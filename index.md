@@ -1,8 +1,4 @@
-## Project 5 - Dive into Deep Learning
 
-Note: Original images from https://www.insectimages.org/index.cfm. In this blog, I trained a deep learning model to classify beetles, cockroaches and dragonflies using these images, and explained how the neural network classified the images using SHapley Additive exPlanations.
-
-<hr/>
 
 ## Project 4 - A dashboard visualization of PhD degrees awarded in the US
 
