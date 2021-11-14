@@ -1,9 +1,199 @@
 ## Project 5 - Image Classification and SHapley Additive exPlanations
-_Source data: [Insect Images](https://www.insectimages.org/index.cfm)._
 
 ![](shap_header.svg)
+_Source: [Github](https://github.com/slundberg/shap)_
 
 SHAP (SHapley Additive exPlanations) is an approach to explain the output of any machine learning model. It can be applied to tree ensemble models, such as XGBoost, LightGBM, and CatBoost, to explain how each feature contributes to push the model output from the base value to the model output. This is important for us to understand how a single feature effects the output of the model. SHAP also has support for natural language models and deep learning models. In this example, I went through a simple image classification task with Convolutional Neural Network (CNN) in PyTorch and used DeepExplainer to plot a feature attributions to explain the model for the predicted output images.
+
+_Source data: [Insect Images](https://www.insectimages.org/index.cfm)._
+
+The data used for this project are collected from the insect images website linked above. Once downloaded and unziped, this is what the folder structure looks like:
+
+![](insects_folder_structure.png)
+
+We can see that there are three types of insects that we aim to classifier with our cnn model - beetles, cockroach, and dragonflies. In order to better understand the images I am dealing with, I also visualized and printed out some of the insect images from the train set in Google Colab notebook as part of the EDA. 
+
+![](insects_image.png)
+
+Once glancing through the types of images I will be dealing with, I also just did a quick count of the number of images in total in both train and test set. It turns out that we have a fairly small dataset to deal with - 1019 training images + 180 testing images in total. 
+
+To tackle this problem, I decide to build a small custom CNN model with code adapted from a deep learning course I took at Duke. When building this model, I define a sub-class of `nn.Module` and override two functions: `__init__` and `forward`. 
+
+* `__init__` is the model constructor. Here, I first call the parent's constructor then define my layers. This can be thought of as creating the nodes of our computational graph.
+* `forward` defines the forward pass of my network. In other words, this defines the connections between the nodes (layers) of our computation graph. Must return a tensor.
+
+```
+# Define MyNet model class
+class MyNet(nn.Module):
+    def __init__(self):
+        super(MyNet, self).__init__()
+        self.conv1 = nn.Conv2d(in_channels=3, out_channels=32, kernel_size=3, stride=1, padding=1)
+        self.conv2 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1)
+        self.fc1 = nn.Linear(in_features=(200704), out_features=128)
+        self.fc2 = nn.Linear(128, 3)
+
+    def forward(self, x):
+        x = self.conv1(x)
+        x = F.relu(x)
+        x = F.max_pool2d(x, kernel_size=2)
+        
+        x = self.conv2(x)
+        x = F.relu(x)
+        x = F.max_pool2d(x, kernel_size=2)
+        
+        x = torch.flatten(x, 1)
+        x = self.fc1(x)
+        x = F.relu(x)
+        x = self.fc2(x)
+        return x
+    
+# Construct a MyNet instance on the correct device
+model = MyNet().to(device)
+
+# Print nodes in model's graph
+print(model)
+```
+![](MyNet.png)
+
+I then initialize the loss function (`criterion`) and optimizer needed for the training process. 
+For the `criterion`, I use `nn.CrossEntropyLoss`, which combines `nn.LogSoftmax` with `nn.NLLLoss`.
+For the `optimizer`, I use an `SGD` optimizer with learning rate 0.01.
+
+```
+# Construct loss function object
+criterion = nn.CrossEntropyLoss().to(device)
+
+# Construct optimizer
+optimizer = optim.SGD(model.parameters(), lr=0.01)
+```
+
+Once I have the model and learning criterion established, I can prepare the data and data loading process. The first step is to define the `transform` class where I define the input proprocessing desired for each input. In this case, I simply convert the data to a tensor and normalize the data about the precalculated mean and std of each channel in the training set.
+
+After unzipping the folders with the insect pictures and setting my file paths, the next step is to construct a `DataLoader`s for both the train and test `Datasest`. The role of the `DataLoader` is to wrap an iterable around the dataset so that I can easily serve the data up in batches. This is where I set the batch size, and `shuffle` flag. Typically, training data is shuffuled to help with model convergence. 
+
+```
+# Define preprocessing
+transform=transforms.Compose([
+        transforms.Resize(size = (224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=(0.5946,0.5732,0.5126), std=(0.2671,0.2737, 0.3058))
+        ])
+
+transform_base=transforms.Compose([
+        transforms.Resize(size = (224, 224)),
+        transforms.ToTensor()
+        ])
+```
+
+```
+# Set file paths
+base_dir = './insects'
+train_dir = os.path.join(base_dir, 'train')
+test_dir = os.path.join(base_dir, 'test')
+```
+
+```
+# Load data into datasets
+train_dataset = datasets.ImageFolder(train_dir, transform=transform)
+val_dataset = datasets.ImageFolder(test_dir, transform=transform)
+```
+```
+# Construct dataloaders
+train_loader = torch.utils.data.DataLoader(train_dataset, 
+                                           batch_size=32, 
+                                           shuffle=True,
+                                           num_workers=2)
+test_loader = torch.utils.data.DataLoader(val_dataset, 
+                                          batch_size=32, 
+                                          shuffle=False,
+                                          num_workers=2)
+```
+
+Finally, I can start training the model. Training is typically done by looping over a specified number of epoches. In each epoch, I iterate over all batches of the training data and update the model. 
+
+```
+epochs = 10
+
+for i in range(1, epochs+1):
+    # Put model in train mode
+    model.train()
+    print("\nEpoch [{}/{}]".format(i, epochs))
+
+    total_ims = 0
+    total_batches = 0
+    total_loss = 0
+    total_corrects = 0
+    
+    # Train the training dataset for 1 epoch.
+    for batch_idx, (images, targets) in enumerate(train_loader):
+        images = images.to(device)
+        targets = targets.to(device)
+
+        optimizer.zero_grad()
+        outputs = model(images)
+
+        loss = criterion(outputs, targets)
+        loss.backward()
+        optimizer.step()
+        
+        _, predicted = torch.max(outputs, 1)
+        correct = predicted.eq(targets).sum()
+
+        total_ims += targets.shape[0]
+        total_batches += 1
+        total_loss += loss
+        total_corrects += correct.item()
+        # Print every 32 batches
+        if batch_idx % 32 == 0:
+            print("batch: {}".format(batch_idx), "\tloss: {}".format(loss.item()))
+    
+    avg_loss = total_loss / total_batches
+    acc = (total_corrects / total_ims) * 100.0
+
+    print("Training loss: %.4f, Training accuracy: %.4f" %(avg_loss, acc))
+```
+
+Below is snapshot of the training proccess:
+
+![](training_output.png)
+
+Now that I have a trained model, I can test its performance on the test set. To do this, I use a similar loop to the training procedure, but in testing there is no need to compute gradients or update the model. 
+
+The model is able to achieve a test accuracy of 86.11 and a total correct predictions of 919:
+
+![](test_acc.png)
+
+![](total_corrects.png)
+
+I also wonder the how the model accuries vary by class, so I calculate the correct prediction for each class:
+
+```
+# prepare to count predictions for each class
+correct_pred = {classname: 0 for classname in classes}
+total_pred = {classname: 0 for classname in classes}
+
+# again no gradients needed
+with torch.no_grad():
+    for data in test_loader:
+        images, labels = data    
+        outputs = model(images)
+        _, predictions = torch.max(outputs, 1)
+        # collect the correct predictions for each class
+        for label, prediction in zip(labels, predictions):
+            if label == prediction:
+                correct_pred[classes[label]] += 1
+            total_pred[classes[label]] += 1
+
+  
+# print accuracy for each class
+for classname, correct_count in correct_pred.items():
+    accuracy = 100 * float(correct_count) / total_pred[classname]
+    print("Accuracy for class {:5s} is: {:.1f} %".format(classname, 
+                                                   accuracy))
+```
+
+![](acc_by_class.png)
+
 
 
 
