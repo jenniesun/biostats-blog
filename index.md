@@ -4,16 +4,18 @@ An interpretable model is one whose decisions humans can understand. Some models
 
 Interpretable ML can be local and tell us something about how a machine makes a prediction for a particular instance, or global. Recently, there has been much interest in model-agnostic interpretable ML that can provide interpretation for multiple ML families (e.g. trees, support vector machines and neural nets).
 
-Reference:
-
-[Interpretable Machine Learning](https://christophm.github.io/interpretable-ml-book/)
+_Reference:[Interpretable Machine Learning](https://christophm.github.io/interpretable-ml-book/)_
 
 
 ![](shap_header.svg)
 
-_Source: [Github](https://github.com/slundberg/shap)_
+### SHAP 
 
 SHAP (SHapley Additive exPlanations) is an approach to explain the output of any machine learning model. It can be applied to tree ensemble models, such as XGBoost, LightGBM, and CatBoost, to explain how each feature contributes to push the model output from the base value to the model output. This is important for us to understand how a single feature effects the output of the model. SHAP also has support for natural language models and deep learning models. In this example, I went through a simple image classification task with Convolutional Neural Network (CNN) in PyTorch and used DeepExplainer to plot a feature attributions to explain the model for the predicted output images.
+
+_Source: [Github](https://github.com/slundberg/shap)_
+
+### Image Classification with Insect Pictures
 
 _Source data: [Insect Images](https://www.insectimages.org/index.cfm)._
 
@@ -22,15 +24,16 @@ The data used for this project are collected from the insect images website link
 ![](insects_folder_structure.png)
 
 ### Visualize Data
-We can see that there are three types of insects that we aim to classifier with our cnn model - beetles, cockroach, and dragonflies. In order to better understand the images I am dealing with, I also visualized and printed out some of the insect images from the train set in Google Colab notebook as part of the EDA. 
+
+We can see that there are three types of insects that we aim to classify with a CNN model - beetles, cockroach, and dragonflies. In order to better understand the images I am dealing with, I also visualized and printed out some of the insect images from the train set in Google Colab notebook as part of the EDA. 
 
 ![](insects_image.png)
 
-Once glancing through the types of images I will be dealing with, I also just did a quick count of the number of images in total in both train and test set. It turns out that we have a fairly small dataset to deal with - 1019 training images + 180 testing images in total. 
+Once glancing through the types of images I will be dealing with, I also did a quick count of the number of images in total in both train and test set. It turns out that I have a fairly small dataset to deal with - 1019 training images + 180 testing images in total. 
 
 ### Define Model
 
-To tackle this problem, I decide to build a small custom CNN model with code adapted from a deep learning course I took at Duke. When building this model, I define a sub-class of `nn.Module` and override two functions: `__init__` and `forward`. 
+To tackle this problem, I decided to build a small custom CNN model with code adapted from a deep learning course I took at Duke. When building this model, I define a sub-class of `nn.Module` and override two functions: `__init__` and `forward`. 
 
 * `__init__` is the model constructor. Here, I first call the parent's constructor then define my layers. This can be thought of as creating the nodes of our computational graph.
 * `forward` defines the forward pass of my network. In other words, this defines the connections between the nodes (layers) of our computation graph. Must return a tensor.
@@ -86,7 +89,7 @@ optimizer = optim.SGD(model.parameters(), lr=0.01)
 
 Once I have the model and learning criterion established, I can prepare the data and data loading process. The first step is to define the `transform` class where I define the input proprocessing desired for each input. In this case, I simply convert the data to a tensor and normalize the data about the precalculated mean and std of each channel in the training set.
 
-After unzipping the folders with the insect pictures and setting my file paths, the next step is to construct a `DataLoader`s for both the train and test `Datasest`. The role of the `DataLoader` is to wrap an iterable around the dataset so that I can easily serve the data up in batches. This is where I set the batch size, and `shuffle` flag. Typically, training data is shuffuled to help with model convergence. 
+After unzipping the folders with the insect pictures and setting my file paths, the next step is to construct `DataLoader`s for both the train and test `Datasest`. The role of the `DataLoader` is to wrap an iterable around the dataset so that I can easily serve the data up in batches. This is where I set the batch size, and `shuffle` flag. Typically, training data is shuffuled to help with model convergence. 
 
 ```
 # Define preprocessing
@@ -188,7 +191,7 @@ The model is able to achieve a test accuracy of 86.11 and a total correct predic
 
 ### Accuracies by Class 
 
-I also wonder the how the model accuracies vary by class, so I calculate the correct prediction for each class:
+I also wonder how the model accuracies vary by class, so I calculate the correct prediction for each class:
 
 ```
 # prepare to count predictions for each class
@@ -219,10 +222,9 @@ for classname, correct_count in correct_pred.items():
 
 ### Interpretable Deep Learning
 
-This is where SHAP DeepExplainer comes into play. Similar to using SHAP values to explain how each variables contrinutes to the model output in tree based models, in deep learning exampls, essentially, if we approximate the model with a linear function between each background data sample and the current input to be explained, and we assume the input features are independent then expected gradients will compute approximate SHAP values. 
+This is where SHAP DeepExplainer comes into play. Similar to using SHAP values to explain how each variable contrinutes to the model output in tree based models, in deep learning examples, essentially, if we approximate the model with a linear function between each background data sample and the current input to be explained, and we assume the input features are independent then expected gradients will compute approximate SHAP values. 
 
 Therefore, I first select a set of background examples to take an expectation over, and then use SHAP values to explain predictions of the model on three images. Lastly, I plot the feature attributions of the three chosen images.
-
 
 ```
 # since shuffle=True, this is a random sample of test data
@@ -252,6 +254,9 @@ The plot above shows the explanations of the predictions for the three input ima
 Although deep learning models have been known for their powerful performance in handling various machine learning and artificial intelligence tasks, due to their black-box nature, understanding their prediction results is not often an easy tasks. With helpful interpretation tools like SHAP, we are able to better reveal the ways deep learning models make decisions. 
 
 ![](black_box.png)
+
+
+The complete code can also be found in [this notebook](https://github.com/jenniesun/biostats-blog/blob/main/assignment5.ipynb).
 
 
 <hr/>
