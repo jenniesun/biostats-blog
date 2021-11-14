@@ -1,3 +1,13 @@
+## Project 5 - Image Classification and SHapley Additive exPlanations
+_Source data: [Insetc Images](https://www.insectimages.org/index.cfm)._
+
+![](shap_header.svg)
+
+SHAP (SHapley Additive exPlanations) is an approach to explain the output of any machine learning model. It can be applied to tree ensemble models, such as XGBoost, LightGBM, and CatBoost, to explain how each feature contributes to push the model output from the base value to the model output. This is important for us to understand how a single feature effects the output of the model. SHAP also has support for natural language models and deep learning models. In this example, I went through a simple image classification task with Convolutional Neural Network (CNN) in PyTorch and used DeepExplainer to plot a feature attributions to explain the model for the predicted output images.
+
+
+
+<hr/>
 
 
 ## Project 4 - A dashboard visualization of PhD degrees awarded in the US
