@@ -1,6 +1,8 @@
 ## Project 5 - Image Classification and SHapley Additive exPlanations
 
 ![](shap_header.svg)
+![](pytorch.png)
+
 _Source: [Github](https://github.com/slundberg/shap)_
 
 SHAP (SHapley Additive exPlanations) is an approach to explain the output of any machine learning model. It can be applied to tree ensemble models, such as XGBoost, LightGBM, and CatBoost, to explain how each feature contributes to push the model output from the base value to the model output. This is important for us to understand how a single feature effects the output of the model. SHAP also has support for natural language models and deep learning models. In this example, I went through a simple image classification task with Convolutional Neural Network (CNN) in PyTorch and used DeepExplainer to plot a feature attributions to explain the model for the predicted output images.
@@ -11,11 +13,14 @@ The data used for this project are collected from the insect images website link
 
 ![](insects_folder_structure.png)
 
+### Visualize Data
 We can see that there are three types of insects that we aim to classifier with our cnn model - beetles, cockroach, and dragonflies. In order to better understand the images I am dealing with, I also visualized and printed out some of the insect images from the train set in Google Colab notebook as part of the EDA. 
 
 ![](insects_image.png)
 
 Once glancing through the types of images I will be dealing with, I also just did a quick count of the number of images in total in both train and test set. It turns out that we have a fairly small dataset to deal with - 1019 training images + 180 testing images in total. 
+
+### Define Model
 
 To tackle this problem, I decide to build a small custom CNN model with code adapted from a deep learning course I took at Duke. When building this model, I define a sub-class of `nn.Module` and override two functions: `__init__` and `forward`. 
 
@@ -55,6 +60,8 @@ print(model)
 ```
 ![](MyNet.png)
 
+### Initialize Loss Function and Optimizer
+
 I then initialize the loss function (`criterion`) and optimizer needed for the training process. 
 For the `criterion`, I use `nn.CrossEntropyLoss`, which combines `nn.LogSoftmax` with `nn.NLLLoss`.
 For the `optimizer`, I use an `SGD` optimizer with learning rate 0.01.
@@ -66,6 +73,8 @@ criterion = nn.CrossEntropyLoss().to(device)
 # Construct optimizer
 optimizer = optim.SGD(model.parameters(), lr=0.01)
 ```
+
+### Prepare Data and Data Loading Process
 
 Once I have the model and learning criterion established, I can prepare the data and data loading process. The first step is to define the `transform` class where I define the input proprocessing desired for each input. In this case, I simply convert the data to a tensor and normalize the data about the precalculated mean and std of each channel in the training set.
 
@@ -108,6 +117,8 @@ test_loader = torch.utils.data.DataLoader(val_dataset,
                                           shuffle=False,
                                           num_workers=2)
 ```
+
+### Train Model
 
 Finally, I can start training the model. Training is typically done by looping over a specified number of epoches. In each epoch, I iterate over all batches of the training data and update the model. 
 
@@ -157,6 +168,8 @@ Below is snapshot of the training proccess:
 
 ![](training_output.png)
 
+### Test Model
+
 Now that I have a trained model, I can test its performance on the test set. To do this, I use a similar loop to the training procedure, but in testing there is no need to compute gradients or update the model. 
 
 The model is able to achieve a test accuracy of 86.11 and a total correct predictions of 919:
@@ -165,7 +178,9 @@ The model is able to achieve a test accuracy of 86.11 and a total correct predic
 
 ![](total_corrects.png)
 
-I also wonder the how the model accuries vary by class, so I calculate the correct prediction for each class:
+### Accuracies by Class 
+
+I also wonder the how the model accuracies vary by class, so I calculate the correct prediction for each class:
 
 ```
 # prepare to count predictions for each class
@@ -194,7 +209,41 @@ for classname, correct_count in correct_pred.items():
 
 ![](acc_by_class.png)
 
+### Interpretable Deep Learning
 
+This is where SHAP DeepExplainer comes into play. Similar to using SHAP values to explain how each variables contrinutes to the model output in tree based models, in deep learning exampls, essentially, if we approximate the model with a linear function between each background data sample and the current input to be explained, and we assume the input features are independent then expected gradients will compute approximate SHAP values. 
+
+Therefore, I first select a set of background examples to take an expectation over, and then use SHAP values to explain predictions of the model on three images. Lastly, I plot the feature attributions of the three chosen images.
+
+
+```
+# since shuffle=True, this is a random sample of test data
+batch = next(iter(base_loader))
+images, labels = batch
+
+background = images[:100].to(device)
+test_images = images[100:103].to(device)
+
+e = shap.DeepExplainer(model, background)
+shap_values = e.shap_values(test_images)
+
+shap_numpy = [np.swapaxes(np.swapaxes(s, 1, -1), 1, 2) for s in shap_values]
+test_numpy = np.swapaxes(np.swapaxes(test_images.detach().cpu().numpy(), 1, -1), 1, 2)
+```
+```
+# plot the feature attributions
+shap.image_plot(shap_numpy, np.transpose(test_images.cpu().data.numpy(),(0,2,3,1)))
+```
+
+![](shap_feature_attributions.png)
+
+The plot above shows the explanations of the predictions for the three input images selected. Red pixels represent positive SHAP values that increase the probability of the class, while blue pixels represent negative SHAP values that reduces the probability of the class.  
+
+### Ending Note
+
+Although deep learning models have been known for their powerful performance in handling various machine learning and artificial intelligence tasks, due to their black-box nature, understanding their prediction results is not often an easy tasks. With helpful interpretation tools like SHAP, we are able to better reveal the ways deep learning models make decisions. 
+
+![](black_box.png)
 
 
 <hr/>
