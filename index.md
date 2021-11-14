@@ -1,5 +1,5 @@
 ## Project 5 - Image Classification and SHapley Additive exPlanations
-_Source data: [Insetc Images](https://www.insectimages.org/index.cfm)._
+_Source data: [Insect Images](https://www.insectimages.org/index.cfm)._
 
 ![](shap_header.svg)
 
