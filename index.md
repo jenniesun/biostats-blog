@@ -1,7 +1,15 @@
-## Project 5 - Image Classification and SHapley Additive exPlanations
+## Project 5 - Image Classification, Interpretable Models, and SHapley Additive exPlanations
+
+An interpretable model is one whose decisions humans can understand. Some models such as linear models with a small number of variables, or decision trees with limited depth, are intrinsically interpretable. Others such as ensembles, high-dimensional support vector machines or neural networks are essentially black boxes. Interpretable ML studies how to make black box models comprehensible to humans, typically by showing how a few key features influence the machine prediction.
+
+Interpretable ML can be local and tell us something about how a machine makes a prediction for a particular instance, or global. Recently, there has been much interest in model-agnostic interpretable ML that can provide interpretation for multiple ML families (e.g. trees, support vector machines and neural nets).
+
+Reference:
+
+[Interpretable Machine Learning](https://christophm.github.io/interpretable-ml-book/)
+
 
 ![](shap_header.svg)
-![](pytorch.png)
 
 _Source: [Github](https://github.com/slundberg/shap)_
 
