@@ -47,7 +47,7 @@ In the heatmap, we set a threshold of 0.5 to differentiate features that are hig
 
 Based on the results of the heatmap, we will explore 3 approahces to the multivariate model, which are: model with all features, with features highly correlated with deaths, and with features with low correlation to deaths. 
 
-### Model Building an Time-Series Forecasting
+### Building a Time-Series Forecasting Model
 
 We are interested to model COVID-19 daily growths and explored both univariate and multivariate analysis for the project. We also compared the ability to forecast future deaths between the two analysis with easy-to-understand visualization and evaluation metrics such as RMSE. 
 
