@@ -6,20 +6,17 @@ The rapid spread of the COVID-19 pandemic has raised huge concerns about the pot
 
 Below are the two main data sources used in the analysis: 
 
-* Open-Access Data and Computational Resources to Address COVID-19 (https://datascience.nih.gov/covid-19-open-access-resources)
+* _[Open-Access Data and Computational Resources to Address COVID-19](https://datascience.nih.gov/covid-19-open-access-resources)_
 
 Summary of the dataset: COVID-19 open-access data and computational resources are being provided by federal agencies, including NIH, public consortia, and private entities. These resources are freely available to researchers, and this page will be updated as more information becomes available. 
 
-* Amazon Web Services (AWS) data lake for analysis of COVID-19 data
-Supplementary:
-
-Data Behind the Dashboards | NC COVID-19 (https://covid19.ncdhhs.gov/dashboard/data-behind-dashboards)
+* _[Amazon Web Services (AWS) data lake for analysis of COVID-19 data](https://covid19.ncdhhs.gov/dashboard/data-behind-dashboards)_
 
 Summary of the dataset: NCDHHS has provided the following data from our NC COVID-19 dashboards: Daily Cases and Deaths Metrics, Daily Testing Metrics, County Cases and Deaths, ZIP Code Cases and Deaths, Demographics, Cases Demographics, Outbreaks and Clusters, PPE, Hospital Patient Data, Hospital Beds and Ventilators, Hospitalization Demographics, Vaccinations - Doses by County, People Vaccinated by County and People Vaccinated Demographics.
 
 After examining the data sources, we decided to mainly focus on the three datasets: `AWS_casesDHPC`, `DHHS_HOSPITAL_BEDS_VENTILATORS_REGION`, and `DHHS_HOSPITAL_METRICS_REGION` to conduct the analysis of interest. 
 
-Since we are interested in the region level analysis, specifically, we want to predict the number of COVID-19 deaths in the Duke Healthcare Preparedness Coalition (DHPC) per week. Therefore, the unit of analysis for the project was determined to be :`Number of COVID-19 deaths in DHPC / week`. 
+Since we are interested in the region level analysis, specifically, we want to predict the number of COVID-19 deaths in the Duke Healthcare Preparedness Coalition (DHPC) per week. Therefore, the unit of analysis for the project was determined to be : `Number of COVID-19 deaths in DHPC / week`. 
 
 ### Data Preprocessing 
 
@@ -34,11 +31,11 @@ The majority of the steps are fairly standard, and the Colab notebook for the an
 
 For handling missing values, we followed two steps. We noticed that the majority of the data points are missing during the early stage of COVID data collection (before June, 2020), possibly due to the limitation in the tools and labor. Therefore, we decided to chop the first 3 months of data, which leaves us everything starting from June-2020 up until this month (November 2021) for the analysis. After dropping these rows with null values, we noticed that there are still a small portion of missing values in the `Hospitalized and Ventilated COVID Inpatient Count` column. Considering the missing values exist in the rows with the earliest date where hospitalized inpatient count was relatively low comparing to later time, we filled the NA values with 0 beore proceeding with the analysis. 
 
-### EDA
+### EDA - Visualizing Time-Series
 
 Using the `pandas_profilling` package, we examined summary statistics of the final dataframe, including correlations between columns, missing value percentage, distinct values, mean values, etc.
 
-This plot below shows a weekly trend for each variable from the June, 2020 to November, 2021. The numbers on the x axis are the week numbers, which represents the transformed version of the date variable. The y axis shows the count of each variable corresponding to the weeks. 
+This plot below shows a weekly trend for each variable from the June, 2020 to November, 2021. The numbers on the x axis are the week numbers, which represents the transformed version of the date variable. The y axis shows the count of each variable corresponding to the weeks. It seems like there's a seasonal trend for `Hospitalizations` (shown in blue). Since our variable of interest is `Deaths (daily growth)` (shown in orange), which is hard to tell from this overall plot, we will examine it more closely in the later.
 
 ![](weekly_stats.png)
 
@@ -52,8 +49,43 @@ Based on the results of the heatmap, we will explore 3 approahces to the multiva
 
 ### Model Building an Time-Series Forecasting
 
+We are interested to model COVID-19 daily growths and explored both univariate and multivariate analysis for the project. We also compared the ability to forecast future deaths between the two analysis with easy-to-understand visualization and evaluation metrics such as RMSE. 
+
+#### Univariate Analysis on the Growth of COVID-19 Death Count
+
+we start our analysis on the growth of covid death count with a univariate time series analysis. Since it's a univariate time-series forecasting, we are only using two variables in which one is time and the other is the field to forecast. In this case, it is the `Deaths (daily growth) (CUSTOM)` variable in the dataset.
+
+We start our analysis by doing EDA to detect if there's any trend and seasonality pattern of changes with regards to time. These are shown in the the autocorrelation, seasonality, and lag plots below.
 
 
+##### Trend, Autocorrelation, and Partial Autocorrelation
+
+A trend is observed when there is an increasing or decreasing slope observed in the time series. In the first plot below, we do observe a few spikes in the middle and towards the end of the timeframe of the analysis.   
+
+Autocorrelation is simply the correlation of a series with its own lags. If a series is significantly autocorrelated, that means, the previous values of the series (lags) may be helpful in predicting the current value. Partial Autocorrelation also conveys similar information but it conveys the pure correlation of a series and its lag, excluding the correlation contributions from the intermediate lags. In the autocorrelation and partial correlation plots below, we can see that this series of data is positively correlated with its own lags and becomes negatively correlated as the number of lags increases. 
+
+![](auto_correlation.png)
+
+##### Test for seasonality
+
+For time series analysis, another common aspect to check is seasonality. A seasonality is observed when there is a distinct repeated pattern observed between regular intervals due to seasonal factors. The most common way to test for seasonality of a time series is to plot the series and check for repeatable patterns in fixed time intervals. The types of seasonality is determined by week in our case. As this plot below shows, it seems like the first 40 lags of the series are correlated with the previous ones more distinctively, while the pattern starts to level off as the number of lags goes over 40. 
+
+![](seasonality.png)
+
+##### Lag Plots
+
+A Lag plot is a scatter plot of a time series against a lag of itself. It is normally used to check for autocorrelation. If there is any pattern existing in the series, the series is autocorrelated. If there is no such pattern, the series is likely to be random white noise. As we can see from the plotting results, we can observe some correlation patterns for the first 2 lags with a positive correlation. However, starting from lag 3, the data points start to become more scattered and do not follow the pattern as much, indicating that the series is more likley to be random white noise as the number of lags passes 3. This visualization results is also consistent with our previous plots.    
+
+![](lag_plots.png)
+
+
+#### ARIMA Model - Figuring Out the Best Order
+
+We then use an ARIMA (Auto-Regressive Integrated Moving Average) model to conduct the forecasting task. ARIMA is a class of models that based on its own lags and the lagged forecast errors. Any non-seasonal time series that exhibits patterns and is not a random white noise can be modelled with ARIMA models.
+
+
+
+Using the best order returned by the auto_arima package for model training, we were able to achieve a RMSE of 2.18 as a result.
 
 <hr/>
 
