@@ -53,7 +53,7 @@ We are interested to model COVID-19 daily growths and explored both univariate a
 
 #### Univariate Analysis on the Growth of COVID-19 Death Count
 
-we start our analysis on the growth of covid death count with a univariate time series analysis. Since it's a univariate time-series forecasting, we are only using two variables in which one is time and the other is the field to forecast. In this case, it is the `Deaths (daily growth) (CUSTOM)` variable in the dataset.
+We start our analysis on the growth of covid death count with a univariate time series analysis. Since it's a univariate time-series forecasting, we are only using two variables in which one is time and the other is the field to forecast. In this case, it is the `Deaths (daily growth) (CUSTOM)` variable in the dataset.
 
 We start our analysis by doing EDA to detect if there's any trend and seasonality pattern of changes with regards to time. These are shown in the the autocorrelation, seasonality, and lag plots below.
 
@@ -83,6 +83,25 @@ A Lag plot is a scatter plot of a time series against a lag of itself. It is nor
 
 We then use an ARIMA (Auto-Regressive Integrated Moving Average) model to conduct the forecasting task. ARIMA is a class of models that based on its own lags and the lagged forecast errors. Any non-seasonal time series that exhibits patterns and is not a random white noise can be modelled with ARIMA models.
 
+ARIMA model is characterized by 3 terms (Auto-Regression + Integrated + Moving-Average. 
+
+* Auto-Regression basically means that we are using the previous value of the time series in order to predict the future. Here, `p` is the order of the AR term where the number of lags of Y to be used as predictors. 
+
+* Integrated: Here, we use `d` to signify the minimum number of differencing needed to make the series stationary.
+
+* Moving Average: This means that we are using previous error to make the future prediction, and we use `q` to represent the order of the MA term where the number of lagged forecast errors that should go.
+
+The main job here is to decide the order of the AR, I, MA parts which are donated by(p,d,q) respectively. Luckily, this can be done automatically with the `pmdarima` library. The `auto_arima` funcion can figure out the oder of the ARIMA all by itself. Below is a code snippet of how it works:
+
+```
+from pmdarima import auto_arima
+stepwise_fit = auto_arima(df_week['Deaths (daily growth) (CUSTOM)'], trace=True,
+                          suppress_warnings=True)
+```
+
+By using AIC as the selection criteria, the function judges how good a particular order model is, and recommends the one with the lowest AIC score. From the output below, we can see that best ARIMA model seems to be of the order (1,0,2) with the minimum AIC score=348.800. With this information, we can move forward with training the model and start making predictions. 
+
+![](auto_arima.png)
 
 
 Using the best order returned by the auto_arima package for model training, we were able to achieve a RMSE of 2.18 as a result.
