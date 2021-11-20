@@ -1,10 +1,70 @@
+## Final Project - Covid-19 Forecasting
+
+The rapid spread of the COVID-19 pandemic has raised huge concerns about the potential consequences of a health disaster that would result in a huge number of deaths. Although it is difficult to make accurate predictions of the number of deaths as a result of the COVID-19 disease, this prediction is crutial for public health authorities to make the most reliable decisions and establish the necessary precautions to protect people's lives. In this project, we present an approch for predicting the number of deaths from COVID-19 at the region level. This analysis requires modeling and comparing the number of COVID-19 deaths using both univariate and multivariate time-series analysis. The proposed approach was assessed on official data provided by federal agencies, including NIH, public consortia, and private entities. We hope the result of our computational analysis sheds light on the how time-series forecasting models can play a role in predicting number of deaths.  
+
+### Data
+
+Below are the two main data sources used in the analysis: 
+
+* Open-Access Data and Computational Resources to Address COVID-19 (https://datascience.nih.gov/covid-19-open-access-resources)
+
+Summary of the dataset: COVID-19 open-access data and computational resources are being provided by federal agencies, including NIH, public consortia, and private entities. These resources are freely available to researchers, and this page will be updated as more information becomes available. 
+
+* Amazon Web Services (AWS) data lake for analysis of COVID-19 data
+Supplementary:
+
+Data Behind the Dashboards | NC COVID-19 (https://covid19.ncdhhs.gov/dashboard/data-behind-dashboards)
+
+Summary of the dataset: NCDHHS has provided the following data from our NC COVID-19 dashboards: Daily Cases and Deaths Metrics, Daily Testing Metrics, County Cases and Deaths, ZIP Code Cases and Deaths, Demographics, Cases Demographics, Outbreaks and Clusters, PPE, Hospital Patient Data, Hospital Beds and Ventilators, Hospitalization Demographics, Vaccinations - Doses by County, People Vaccinated by County and People Vaccinated Demographics.
+
+After examining the data sources, we decided to mainly focus on the three datasets: `AWS_casesDHPC`, `DHHS_HOSPITAL_BEDS_VENTILATORS_REGION`, and `DHHS_HOSPITAL_METRICS_REGION` to conduct the analysis of interest. 
+
+Since we are interested in the region level analysis, specifically, we want to predict the number of COVID-19 deaths in the Duke Healthcare Preparedness Coalition (DHPC) per week. Therefore, the unit of analysis for the project was determined to be :`Number of COVID-19 deaths in DHPC / week`. 
+
+### Data Preprocessing 
+
+We used Google Colab to perform the analysis since it was a collaborative effort. 
+
+* Drop unnecessary columns
+* Convert date column to the weekly format
+* Slice the dataframe to only the DHPC Coalition
+* Merge datasets (cases/deaths, hospital beds, hospital metrics) based on the date (week) and coalition of interest
+
+The majority of the steps are fairly standard, and the Colab notebook for the analysis is linked at the end of the post for those who are interested in the details. 
+
+For handling missing values, we followed two steps. We noticed that the majority of the data points are missing during the early stage of COVID data collection (before June, 2020), possibly due to the limitation in the tools and labor. Therefore, we decided to chop the first 3 months of data, which leaves us everything starting from June-2020 up until this month (November 2021) for the analysis. After dropping these rows with null values, we noticed that there are still a small portion of missing values in the `Hospitalized and Ventilated COVID Inpatient Count` column. Considering the missing values exist in the rows with the earliest date where hospitalized inpatient count was relatively low comparing to later time, we filled the NA values with 0 beore proceeding with the analysis. 
+
+### EDA
+
+Using the `pandas_profilling` package, we examined summary statistics of the final dataframe, including correlations between columns, missing value percentage, distinct values, mean values, etc.
+
+This plot below shows a weekly trend for each variable from the June, 2020 to November, 2021. The numbers on the x axis are the week numbers, which represents the transformed version of the date variable. The y axis shows the count of each variable corresponding to the weeks. 
+
+![](weekly_stats.png)
+
+Since we are also interested to see the difference between conducting time-series multivariate analysis with different levels of feature correlation, we also plotted a heap map to visualize the correlations across all features in the dataset. 
+
+In the heatmap, we set a threshold of 0.5 to differentiate features that are highly correlated with deaths and those that have low correlation with deaths. The index are only present for those with a correlation of 0.5 or higher across the features. 
+
+![](heatmap.png)
+
+Based on the results of the heatmap, we will explore 3 approahces to the multivariate model, which are: model with all features, with features highly correlated with deaths, and with features with low correlation to deaths. 
+
+### Model Building an Time-Series Forecasting
+
+
+
+
+<hr/>
+
+
 ## Project 5 - Image Classification, Interpretable Models, and SHapley Additive exPlanations
 
 An interpretable model is one whose decisions humans can understand. Some models such as linear models with a small number of variables, or decision trees with limited depth, are intrinsically interpretable. Others such as ensembles, high-dimensional support vector machines or neural networks are essentially black boxes. Interpretable ML studies how to make black box models comprehensible to humans, typically by showing how a few key features influence the machine prediction.
 
 Interpretable ML can be local and tell us something about how a machine makes a prediction for a particular instance, or global. Recently, there has been much interest in model-agnostic interpretable ML that can provide interpretation for multiple ML families (e.g. trees, support vector machines and neural nets).
 
-_Reference:[Interpretable Machine Learning](https://christophm.github.io/interpretable-ml-book/)_
+_Reference: [Interpretable Machine Learning](https://christophm.github.io/interpretable-ml-book/)_
 
 
 ![](shap_header.svg)
