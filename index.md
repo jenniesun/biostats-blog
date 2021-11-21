@@ -60,7 +60,7 @@ We start our analysis on the growth of covid death count with a univariate time 
 We start our analysis by doing EDA to detect if there's any trend and seasonality pattern of changes with regards to time. These are shown in the the autocorrelation, seasonality, and lag plots below.
 
 
-##### Trend, Autocorrelation, and Partial Autocorrelation
+#### Trend, Autocorrelation, and Partial Autocorrelation
 
 A trend is observed when there is an increasing or decreasing slope observed in the time series. In the first plot below, we do observe a few spikes in the middle and towards the end of the timeframe of the analysis.   
 
@@ -68,13 +68,13 @@ Autocorrelation is simply the correlation of a series with its own lags. If a se
 
 ![](auto_correlation.png)
 
-##### Test for seasonality
+#### Test for seasonality
 
 For time series analysis, another common aspect to check is seasonality. A seasonality is observed when there is a distinct repeated pattern observed between regular intervals due to seasonal factors. The most common way to test for seasonality of a time series is to plot the series and check for repeatable patterns in fixed time intervals. The types of seasonality is determined by week in our case. As this plot below shows, it seems like the first 40 lags of the series are correlated with the previous ones more distinctively, while the pattern starts to level off as the number of lags goes over 40. 
 
 ![](seasonality.png)
 
-##### Lag Plots
+#### Lag Plots
 
 A Lag plot is a scatter plot of a time series against a lag of itself. It is normally used to check for autocorrelation. If there is any pattern existing in the series, the series is autocorrelated. If there is no such pattern, the series is likely to be random white noise. As we can see from the plotting results, we can observe some correlation patterns for the first 2 lags with a positive correlation. However, starting from lag 3, the data points start to become more scattered and do not follow the pattern as much, indicating that the series is more likley to be random white noise as the number of lags passes 3. This visualization results is also consistent with our previous plots.    
 
