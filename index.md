@@ -1,6 +1,6 @@
 ## Final Project - Covid-19 Forecasting
 
-The rapid spread of the COVID-19 pandemic has raised huge concerns about the potential consequences of a health disaster that would result in a huge number of deaths. Although it is difficult to make accurate predictions of the number of deaths as a result of the COVID-19 disease, this prediction is crutial for public health authorities to make the most reliable decisions and establish the necessary precautions to protect people's lives. In this project, we present an approch for predicting the number of deaths from COVID-19 at the region level. This analysis requires modeling and comparing the number of COVID-19 deaths using both univariate and multivariate time-series analysis. The proposed approach was assessed on official data provided by federal agencies, including NIH, public consortia, and private entities. We hope the result of our computational analysis sheds light on the how time-series forecasting models can play a role in predicting number of deaths.  
+The rapid spread of the COVID-19 pandemic has raised huge concerns about the potential consequences of a health disaster that would result in a huge number of deaths. Although it is difficult to make accurate predictions of the number of deaths as a result of the COVID-19 disease, they are crucial for public health authorities to make the most reliable decisions and establish the necessary precautions to protect people's lives. In this project, we present an approch for predicting the number of deaths from COVID-19 at the region level. This analysis requires modeling and comparing the number of COVID-19 deaths using both univariate and multivariate time-series analysis. The proposed approach was assessed on official data provided by federal agencies, including NIH, public consortia, and private entities. We hope the result of our computational analysis sheds light on how time-series forecasting models can play a role in predicting number of deaths of a global pandemic.  
 
 ![](header_img_covid.jpeg)
 
@@ -10,48 +10,48 @@ Below are the two main data sources used in the analysis:
 
 * _[Open-Access Data and Computational Resources to Address COVID-19](https://datascience.nih.gov/covid-19-open-access-resources)_
 
-Summary of the dataset: COVID-19 open-access data and computational resources are being provided by federal agencies, including NIH, public consortia, and private entities. These resources are freely available to researchers, and this page will be updated as more information becomes available. 
+COVID-19 open-access data and computational resources are being provided by federal agencies, including NIH, public consortia, and private entities. These resources are freely available to researchers, and this page will be updated as more information becomes available. 
 
 * _[Amazon Web Services (AWS) data lake for analysis of COVID-19 data](https://covid19.ncdhhs.gov/dashboard/data-behind-dashboards)_
 
-Summary of the dataset: NCDHHS has provided the following data from our NC COVID-19 dashboards: Daily Cases and Deaths Metrics, Daily Testing Metrics, County Cases and Deaths, ZIP Code Cases and Deaths, Demographics, Cases Demographics, Outbreaks and Clusters, PPE, Hospital Patient Data, Hospital Beds and Ventilators, Hospitalization Demographics, Vaccinations - Doses by County, People Vaccinated by County and People Vaccinated Demographics.
+NCDHHS has provided the following data from our NC COVID-19 dashboards: Daily Cases and Deaths Metrics, Daily Testing Metrics, County Cases and Deaths, ZIP Code Cases and Deaths, Demographics, Cases Demographics, Outbreaks and Clusters, PPE, Hospital Patient Data, Hospital Beds and Ventilators, Hospitalization Demographics, Vaccinations - Doses by County, People Vaccinated by County and People Vaccinated Demographics.
 
-After examining the data sources, we decided to mainly focus on the three datasets: `AWS_casesDHPC`, `DHHS_HOSPITAL_BEDS_VENTILATORS_REGION`, and `DHHS_HOSPITAL_METRICS_REGION` to conduct the analysis of interest. 
+After examining the data sources, we decide to mainly focus on the three datasets: `AWS_casesDHPC`, `DHHS_HOSPITAL_BEDS_VENTILATORS_REGION`, and `DHHS_HOSPITAL_METRICS_REGION` to conduct the analysis of interest. 
 
-Since we are interested in the region level analysis, specifically, we want to predict the number of COVID-19 deaths in the Duke Healthcare Preparedness Coalition (DHPC) per week. Therefore, the unit of analysis for the project was determined to be : `Number of COVID-19 deaths in DHPC / week`. 
+We are interested in the region level analysis, specifically, we want to predict the number of COVID-19 deaths in the Duke Healthcare Preparedness Coalition (DHPC) per week. Therefore, the unit of analysis for the project is determined to be: `Number of COVID-19 deaths in DHPC / week`. 
 
 ### Data Preprocessing 
 
-We used Google Colab to perform the analysis since it was a collaborative effort. 
+We use Google Colab to perform the analysis for an collaborative effort. Below lists the major steps for data wrangling and preprocessing.
 
 * Drop unnecessary columns
 * Convert date column to the weekly format
-* Slice the dataframe to only the DHPC Coalition
-* Merge datasets (cases/deaths, hospital beds, hospital metrics) based on the date (week) and coalition of interest
+* Slice the dataframe to only include the DHPC Coalition data
+* Merge datasets (cases/deaths, hospital beds, hospital metrics) based on the date (week) and the coalition of interest (DHPC)
 
 The majority of the steps are fairly standard, and the Colab notebook for the analysis is linked at the end of the post for those who are interested in the details. 
 
-For handling missing values, we followed two steps. We noticed that the majority of the data points are missing during the early stage of COVID data collection (before June, 2020), possibly due to the limitation in the tools and labor. Therefore, we decided to chop the first 3 months of data, which leaves us everything starting from June-2020 up until this month (November 2021) for the analysis. After dropping these rows with null values, we noticed that there are still a small portion of missing values in the `Hospitalized and Ventilated COVID Inpatient Count` column. Considering the missing values exist in the rows with the earliest date where hospitalized inpatient count was relatively low comparing to later time, we filled the NA values with 0 beore proceeding with the analysis. 
+For handling missing values, we followe two steps. We notice that the majority of the data points are missing during the early stage of COVID-19 data collection (before June, 2020), possibly due to the limitation in the tools and labor. Therefore, we decide to chop the first 3 months of data, which leaves us everything starting from June, 2020 up until this month (November, 2021) for the analysis. After dropping these rows with null values, we notice that there are still a small portion of missing values in the `Hospitalized and Ventilated COVID Inpatient Count` column. Considering the missing values exist in the rows with the earliest date where hospitalized inpatient count was relatively low comparing to that of the later time, we fill the NA values with 0 before proceeding with the analysis. 
 
 ### EDA - Visualizing Time-Series
 
-Using the `pandas_profilling` package, we examined summary statistics of the final dataframe, including correlations between columns, missing value percentage, distinct values, mean values, etc.
+Using the `pandas_profilling` package, we examine summary statistics of the final dataframe, including correlations between columns, missing value percentage, distinct values, mean values, etc.
 
-This plot below shows a weekly trend for each variable from the June, 2020 to November, 2021. The numbers on the x axis are the week numbers, which represents the transformed version of the date variable. The y axis shows the count of each variable corresponding to the weeks. It seems like there's a seasonal trend for `Hospitalizations` (shown in blue). Since our variable of interest is `Deaths (daily growth)` (shown in orange), which is hard to tell from this overall plot, we will examine it more closely in the later.
+This plot below shows a weekly trend for each variable from June, 2020 to November, 2021. The numbers on the x axis are the week numbers, which represents the transformed version of the date variable. The y axis shows the count of each variable corresponding to the weeks. It seems like there's a seasonal trend for `Hospitalizations` (shown in blue). Since our variable of interest is `Deaths (daily growth)` (shown in orange), which is hard to tell from this overall plot, we will examine it more closely in the later sections.
 
 ![](weekly_stats.png)
 
-Since we are also interested to see the difference between conducting time-series multivariate analysis with different levels of feature correlation, we also plotted a heap map to visualize the correlations across all features in the dataset. 
+Since we are also interested to see the difference between conducting time-series multivariate analysis with different levels of feature correlation, we also plot a heapmap to visualize the correlations across all features in the dataset. 
 
-In the heatmap, we set a threshold of 0.5 to differentiate features that are highly correlated with deaths and those that have low correlation with deaths. The index are only present for those with a correlation of 0.5 or higher across the features. 
+In the heatmap below, we set a threshold of 0.5 to differentiate features that are highly correlated with deaths and those that have low correlation with deaths. The index are only present for those with a correlation of 0.5 or higher across the features. 
 
 ![](heatmap.png)
 
-Based on the results of the heatmap, we will explore 3 approahces to the multivariate model, which are: model with all features, with features highly correlated with deaths, and with features with low correlation to deaths. 
+Based on the results of the heatmap, we will explore 3 approaches using the multivariate model, which are: model with all features, with features highly correlated with deaths, and with features with low correlation to deaths. 
 
 ### Building a Time-Series Forecasting Model
 
-We are interested to model COVID-19 daily growths and explored both univariate and multivariate analysis for the project. We also compared the ability to forecast future deaths between the two analysis with easy-to-understand visualization and evaluation metrics such as RMSE. 
+Since the goal of the project is to predict weekly COVID-19 deaths in the Duke Healthcare Preparedness Coalition (DHPC), we explore both univariate and multivariate analysis for the anlysis. We also compare the ability to forecast future deaths between the two analysis with easy-to-understand visualization and evaluation metrics such as RMSE. 
 
 #### Univariate Analysis on the Growth of COVID-19 Death Count
 
@@ -59,9 +59,9 @@ _Reference:_
 * _[Time Series Forecasting With ARIMA Model in Python for Temperature Prediction](https://medium.com/swlh/temperature-forecasting-with-arima-model-in-python-427b2d3bcb53)_
 * _[Complete Guide on Time Series Analysis in Python](https://www.kaggle.com/prashant111/complete-guide-on-time-series-analysis-in-python)_
 
-We start our analysis on the growth of covid death count with a univariate time series analysis. Since it's a univariate time-series forecasting, we are only using two variables in which one is time and the other is the field to forecast. In this case, it is the `Deaths (daily growth) (CUSTOM)` variable in the dataset.
+We start our analysis on the growth of COVID-19 death count with a univariate time series analysis. Since it's a univariate time-series forecasting, we are only using two variables in which one is time and the other is the field to forecast. In this case, it is the `Deaths (daily growth) (CUSTOM)` variable in the dataset.
 
-We start our analysis by doing EDA to detect if there's any trend and seasonality pattern of changes with regards to time. These are shown in the the autocorrelation, seasonality, and lag plots below.
+We conduct exploratory analysis first to detect if there's any trend and seasonality pattern of changes with regards to time. These are shown in the autocorrelation, seasonality, and lag plots below.
 
 
 #### Trend, Autocorrelation, and Partial Autocorrelation
@@ -99,7 +99,7 @@ ARIMA model is characterized by 3 terms (Auto-Regression + Integrated + Moving-A
 
 * Moving Average: This means that we are using previous error to make the future prediction, and we use `q` to represent the order of the MA term where the number of lagged forecast errors that should go.
 
-The main job here is to decide the order of the AR, I, MA parts which are donated by(p,d,q) respectively. Luckily, this can be done automatically with the `pmdarima` library. The `auto_arima` funcion can figure out the oder of the ARIMA all by itself. Below is a code snippet of how it works:
+The main job here is to decide the order of the AR, I, MA parts which are donated by (p,d,q) respectively. Luckily, this can be done automatically with the `pmdarima` library. The `auto_arima` funcion can figure out the oder of the ARIMA all by itself. Below is a code snippet of how it works:
 
 ```
 from pmdarima import auto_arima
@@ -113,19 +113,19 @@ By using AIC as the selection criteria, the function judges how good a particula
 
 #### Model Training & Evaluation
 
-Just as any other machine learning modeling process, before fitting the model, we need to split the model into train and test sets. Since we are dealing with a fairly small dataset (76 rows), we decided to researve the last 5 weeks of the data as the testing section. 
+Just as any other machine learning modeling process, before fitting the model, we need to split the model into train and test sets. Since we are dealing with a fairly small dataset (76 rows), we decide to reserve the last 5 weeks of the data as the testing set. 
 
 Using the best order returned by the `auto_arima` package for model training, simply calling the ARIMA function gives us the summary output below. The output summary shows the coefficients of each AR and MA term. Generally speaking, a higher magnitude of this variable means a larger impact on the output. As we can see here, all of the variables listed in the summary output are statistically significant at p<0.05 level.
 
 ![](arima_result.png)
 
-To check how good our model is, we need to use the model to make predictions using the test data. Below is an output plot showing the ARIMA predictions of COVID-19 deaths (bluw line) and the actual data in the test set (orange) for the 5 weeks after the training data ends. We can see that the general trend of the prediction is going down, which is consistent with the trend shown in the actual data. 
+To check how good our model is, we need to make predictions using the test data. Below is an output plot showing the ARIMA predictions of COVID-19 deaths (blue line) and the actual data in the test set (orange line) for the 5 weeks after the training data ends. We can see that the general trend of the prediction is going down, which is consistent with the trend shown in the actual data. 
 
 ![](arima_prediction_plot.png)
 
-Other than trying to detect a matching trend between the predictions and the actual data based on the plot, we also would like to ascertain how good or bad our model is. To do this, we can look at the root mean squared error for the model prediction. 
+Other than trying to detect a matching trend between the predictions and the actual data based on the plot, we also would like to ascertain how good or bad our model is. To do this, we can look at the root mean squared error (RMSE) for the model prediction. 
 
-The mean value of is 3.40 for the entire dataset, and is 2.88 for the test set. With the ARIMA model, we were able to achieve a RMSE of 2.18 as a result, which is smaller than the previous two statistics, although not to a great extent. This means that our model has some prediction power, but ideally, we would want to see a much smaller RMSE than that of test set.  
+The mean value is 3.40 for the entire dataset, and is 2.88 for the test set. With the ARIMA model, we achieve an RMSE of 2.18 as a result, which is smaller than the previous two statistics, although not to a great extent. This means that our model has some predictive power, but ideally, we would want to see a much smaller RMSE value than that of the test set.  
 
 
 #### Multivariate Modeling
@@ -156,13 +156,11 @@ Intuitively, this result is rather interesting. One would expect that the multiv
 
 #### Ending Note
 
-In this project, we explored both univariate and multivariate time-series analysis to predict a 5-week COVID-19 deaths count in the Duke Healthcare Preparedness Coalition (DHPC). The results show that the multivariate model using only features with low correlation with the death count was the best at forecasting future deaths. This outperformed all other multivariate analysis in our hypothesis as well as the univariate analysis result by achieving the lowest RMSE value. This could be that we have limited data and/or features that could potentially give a better prediction results. In the future, we would like to continue exploring different time-series models as well as finding data/features that are even more relavent to the question of interest to potentially optimize the models inform healthcare decision makers with more exhaustive data-driven results. 
+In this project, we explore both univariate and multivariate time-series analysis to predict a 5-week COVID-19 deaths count in the Duke Healthcare Preparedness Coalition (DHPC). The results show that the multivariate model using only features with low correlation with the death count was the best at forecasting future deaths. This outperformed all other multivariate analysis in our hypothesis as well as the univariate analysis result by achieving the lowest RMSE value. This could be that we have limited data or features that could have potentially given a better prediction results. In the future, we would like to continue exploring different time-series models as well as finding data/features that are even more relavent to the question of interest to optimize the models and inform healthcare decision makers with more exhaustive data-driven results. 
 
-*Links*: 
-
-[Github Repository](https://github.com/jenniesun/covid_forcasting)
-
-[Colab Notebook](https://github.com/jenniesun/covid_forcasting/blob/main/BIO823_Final_Project.ipynb).
+_Links to the project:_
+_[Github Repository](https://github.com/jenniesun/covid_forcasting)_
+_[Colab Notebook](https://github.com/jenniesun/covid_forcasting/blob/main/BIO823_Final_Project.ipynb)_
 
 ![](data-covid-stock.jpeg)
 
