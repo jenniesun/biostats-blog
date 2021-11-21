@@ -53,7 +53,9 @@ We are interested to model COVID-19 daily growths and explored both univariate a
 
 #### Univariate Analysis on the Growth of COVID-19 Death Count
 
-_Reference: [Time Series Forecasting With ARIMA Model in Python for Temperature Prediction](https://medium.com/swlh/temperature-forecasting-with-arima-model-in-python-427b2d3bcb53)_
+_Reference:_
+* _[Time Series Forecasting With ARIMA Model in Python for Temperature Prediction](https://medium.com/swlh/temperature-forecasting-with-arima-model-in-python-427b2d3bcb53)_
+* _[Complete Guide on Time Series Analysis in Python](https://www.kaggle.com/prashant111/complete-guide-on-time-series-analysis-in-python)_
 
 We start our analysis on the growth of covid death count with a univariate time series analysis. Since it's a univariate time-series forecasting, we are only using two variables in which one is time and the other is the field to forecast. In this case, it is the `Deaths (daily growth) (CUSTOM)` variable in the dataset.
 
@@ -126,21 +128,33 @@ The mean value of is 3.40 for the entire dataset, and is 2.88 for the test set. 
 
 #### Multivariate Modeling
 
-In this section we compare the effectiveness of the univariate model to that of a multivariate model at forecasting deaths. We explores three approaches to the multivariate model.
-* Model with only the features highly correlated with deaths
-* Model with only the features with low correlation to deaths
+In this section we compare the effectiveness of the univariate model to that of a multivariate model at forecasting deaths. We explore three approaches to the multivariate model based on the heatmap from the EDA section above.
+
+* Model with only the features highly correlated with deaths (correlation >= 0.5 on the heatmap)
+* Model with only the features with low correlation to deaths (correlation < 0.5 on the heatmap)
 * Model with all features
 
-Since the best performace of the univariate model used a lag of 1 week, we evaluate all our multvariate models with a lag of one week - though an exploratory analysis also showed that lag=1 was the optimal choice for forecasting deaths with the multivariate models.
+We start by checking for stationarity of the data because stationarity is an important property of a time series. A stationary series is one where the values of the series is not a function of time. So, the values are independent of time. In order to make a time series stationary to make it independent of seasonal effects, we can apply some sort of transformation. The most commonly used and convenient method to stationarize the series is by differencing the series at least once until it becomes approcimately stationary. After differencing to stationize the data, we can see that all three approches have variables centered at 0, which will make our subsequent forecasting relatively easy and the results more reliable. 
+
+![](differenced_data.png)
+
+Since the best performance of the univariate model used a lag of 1 week, we evaluate all our multvariate models with a lag of one week - though an exploratory analysis also showed that lag=1 was the optimal choice for forecasting deaths with the multivariate models.
 
 As with the univariate modeling, we reserved the last 5 weeks of the data for testing and trained on the rest.
 
-
 #### Results
 
-The multivariate model with only the low correlated features was the best at forecasting future deaths - outperforming the univariate model (rmse 2.183) and all other multivariate models with an rmse of 1.576 across the 5 forecasted weeks. The multivariate models with all features and the highly correlated features both underperformed as compared to the univariate model with rmse values of 8.993 and 3.379 respectively.
+![](predictions_multivariate.png)
+
+The multivariate model with only the low correlated features was the best at forecasting future deaths - outperforming the univariate model (RMSE 2.183) and all other multivariate models with an RMSE of 1.576 across the 5 forecasted weeks. The multivariate models with all features and the highly correlated features both underperformed as compared to the univariate model with RMSE values of 8.993 and 3.379 respectively.
+
+![](rmse_multivariate.png)
 
 Intuitively, this result is rather interesting. One would expect that the multivaraite model with features uncorrelated with deaths would yeild results similar to the multivariate model. Another interesting finding with the multivariate model with the highly correlated features is that although more of the variance in the distribution of Deaths is accounted for by other features - these relationships make the model worse at forecasting future values.
+
+#### Ending Note
+
+In this project, we explored both univariate and multivariate time-series analysis to predict a 5-week COVID-19 deaths count in the Duke Healthcare Preparedness Coalition (DHPC). The results show that the multivariate model using only features with low correlation with the death count was the best at forecasting future deaths. This outperformed all other multivariate analysis in our hypothesis as well as the univariate analysis result by achieving the lowest RMSE value. This could be that we have limited data and/or features that could potentially give a better prediction results. In the future, we would like to continue exploring different time-series models as well as finding data/features that are even more relavent to the question of interest to potentially optimize the models inform healthcare decision makers with more exhaustive data-driven results. 
 
 
 <hr/>
