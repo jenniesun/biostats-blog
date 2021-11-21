@@ -156,6 +156,8 @@ Intuitively, this result is rather interesting. One would expect that the multiv
 
 In this project, we explored both univariate and multivariate time-series analysis to predict a 5-week COVID-19 deaths count in the Duke Healthcare Preparedness Coalition (DHPC). The results show that the multivariate model using only features with low correlation with the death count was the best at forecasting future deaths. This outperformed all other multivariate analysis in our hypothesis as well as the univariate analysis result by achieving the lowest RMSE value. This could be that we have limited data and/or features that could potentially give a better prediction results. In the future, we would like to continue exploring different time-series models as well as finding data/features that are even more relavent to the question of interest to potentially optimize the models inform healthcare decision makers with more exhaustive data-driven results. 
 
+![](data-covid-stock.jpeg)
+
 
 <hr/>
 
