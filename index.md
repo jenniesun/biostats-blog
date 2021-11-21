@@ -2,7 +2,7 @@
 
 The rapid spread of the COVID-19 pandemic has raised huge concerns about the potential consequences of a health disaster that would result in a huge number of deaths. Although it is difficult to make accurate predictions of the number of deaths as a result of the COVID-19 disease, this prediction is crutial for public health authorities to make the most reliable decisions and establish the necessary precautions to protect people's lives. In this project, we present an approch for predicting the number of deaths from COVID-19 at the region level. This analysis requires modeling and comparing the number of COVID-19 deaths using both univariate and multivariate time-series analysis. The proposed approach was assessed on official data provided by federal agencies, including NIH, public consortia, and private entities. We hope the result of our computational analysis sheds light on the how time-series forecasting models can play a role in predicting number of deaths.  
 
-![](covid_data_science.jpeg)
+![](header_img_covid.jpeg)
 
 ### Data
 
