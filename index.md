@@ -53,6 +53,8 @@ We are interested to model COVID-19 daily growths and explored both univariate a
 
 #### Univariate Analysis on the Growth of COVID-19 Death Count
 
+_Reference: [Time Series Forecasting With ARIMA Model in Python for Temperature Prediction](https://medium.com/swlh/temperature-forecasting-with-arima-model-in-python-427b2d3bcb53)_
+
 We start our analysis on the growth of covid death count with a univariate time series analysis. Since it's a univariate time-series forecasting, we are only using two variables in which one is time and the other is the field to forecast. In this case, it is the `Deaths (daily growth) (CUSTOM)` variable in the dataset.
 
 We start our analysis by doing EDA to detect if there's any trend and seasonality pattern of changes with regards to time. These are shown in the the autocorrelation, seasonality, and lag plots below.
@@ -79,7 +81,9 @@ A Lag plot is a scatter plot of a time series against a lag of itself. It is nor
 ![](lag_plots.png)
 
 
-#### ARIMA Model - Figuring Out the Best Order
+### ARIMA Model
+
+#### Figuring Out the Best Order
 
 We then use an ARIMA (Auto-Regressive Integrated Moving Average) model to conduct the forecasting task. ARIMA is a class of models that based on its own lags and the lagged forecast errors. Any non-seasonal time series that exhibits patterns and is not a random white noise can be modelled with ARIMA models.
 
@@ -103,8 +107,41 @@ By using AIC as the selection criteria, the function judges how good a particula
 
 ![](auto_arima.png)
 
+#### Model Training & Evaluation
 
-Using the best order returned by the auto_arima package for model training, we were able to achieve a RMSE of 2.18 as a result.
+Just as any other machine learning modeling process, before fitting the model, we need to split the model into train and test sets. Since we are dealing with a fairly small dataset (76 rows), we decided to researve the last 5 weeks of the data as the testing section. 
+
+Using the best order returned by the `auto_arima` package for model training, simply calling the ARIMA function gives us the summary output below. The output summary shows the coefficients of each AR and MA term. Generally speaking, a higher magnitude of this variable means a larger impact on the output. As we can see here, all of the variables listed in the summary output are statistically significant at p<0.05 level.
+
+![](arima_result.png)
+
+To check how good our model is, we need to use the model to make predictions using the test data. Below is an output plot showing the ARIMA predictions of COVID-19 deaths (bluw line) and the actual data in the test set (orange) for the 5 weeks after the training data ends. We can see that the general trend of the prediction is going down, which is consistent with the trend shown in the actual data. 
+
+![](arima_prediction_plot.png)
+
+Other than trying to detect a matching trend between the predictions and the actual data based on the plot, we also would like to ascertain how good or bad our model is. To do this, we can look at the root mean squared error for the model prediction. 
+
+The mean value of is 3.40 for the entire dataset, and is 2.88 for the test set. With the ARIMA model, we were able to achieve a RMSE of 2.18 as a result, which is smaller than the previous two statistics, although not to a great extent. This means that our model has some prediction power, but ideally, we would want to see a much smaller RMSE than that of test set.  
+
+
+#### Multivariate Modeling
+
+In this section we compare the effectiveness of the univariate model to that of a multivariate model at forecasting deaths. We explores three approaches to the multivariate model.
+* Model with only the features highly correlated with deaths
+* Model with only the features with low correlation to deaths
+* Model with all features
+
+Since the best performace of the univariate model used a lag of 1 week, we evaluate all our multvariate models with a lag of one week - though an exploratory analysis also showed that lag=1 was the optimal choice for forecasting deaths with the multivariate models.
+
+As with the univariate modeling, we reserved the last 5 weeks of the data for testing and trained on the rest.
+
+
+#### Results
+
+The multivariate model with only the low correlated features was the best at forecasting future deaths - outperforming the univariate model (rmse 2.183) and all other multivariate models with an rmse of 1.576 across the 5 forecasted weeks. The multivariate models with all features and the highly correlated features both underperformed as compared to the univariate model with rmse values of 8.993 and 3.379 respectively.
+
+Intuitively, this result is rather interesting. One would expect that the multivaraite model with features uncorrelated with deaths would yeild results similar to the multivariate model. Another interesting finding with the multivariate model with the highly correlated features is that although more of the variance in the distribution of Deaths is accounted for by other features - these relationships make the model worse at forecasting future values.
+
 
 <hr/>
 
