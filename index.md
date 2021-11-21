@@ -136,7 +136,7 @@ In this section we compare the effectiveness of the univariate model to that of 
 * Model with only the features with low correlation to deaths (correlation < 0.5 on the heatmap)
 * Model with all features
 
-We start by checking for stationarity of the data because stationarity is an important property of a time series. A stationary series is one where the values of the series is not a function of time. So, the values are independent of time. In order to make a time series stationary to make it independent of seasonal effects, we can apply some sort of transformation. The most commonly used and convenient method to stationarize the series is by differencing the series at least once until it becomes approcimately stationary. After differencing to stationize the data, we can see that all three approches have variables centered at 0, which will make our subsequent forecasting relatively easy and the results more reliable. 
+We start by checking for stationarity of the data because stationarity is an important property of a time series. A stationary series is one where the values of the series is not a function of time. So, the values are independent of time. In order to make a time series stationary to make it independent of seasonal effects, we can apply some sort of transformation. The most commonly used and convenient method to stationarize the series is by differencing the series at least once until it becomes approcimately stationary. After differencing to stationize the data, we can see that all three approaches have variables centered at 0, which will make our subsequent forecasting relatively easy and the results more reliable. 
 
 ![](differenced_data.png)
 
