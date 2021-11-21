@@ -2,6 +2,8 @@
 
 The rapid spread of the COVID-19 pandemic has raised huge concerns about the potential consequences of a health disaster that would result in a huge number of deaths. Although it is difficult to make accurate predictions of the number of deaths as a result of the COVID-19 disease, this prediction is crutial for public health authorities to make the most reliable decisions and establish the necessary precautions to protect people's lives. In this project, we present an approch for predicting the number of deaths from COVID-19 at the region level. This analysis requires modeling and comparing the number of COVID-19 deaths using both univariate and multivariate time-series analysis. The proposed approach was assessed on official data provided by federal agencies, including NIH, public consortia, and private entities. We hope the result of our computational analysis sheds light on the how time-series forecasting models can play a role in predicting number of deaths.  
 
+![](covid_data_science.jpeg)
+
 ### Data
 
 Below are the two main data sources used in the analysis: 
@@ -70,7 +72,7 @@ Autocorrelation is simply the correlation of a series with its own lags. If a se
 
 ![](auto_correlation.png)
 
-#### Test for seasonality
+#### Test for Seasonality
 
 For time series analysis, another common aspect to check is seasonality. A seasonality is observed when there is a distinct repeated pattern observed between regular intervals due to seasonal factors. The most common way to test for seasonality of a time series is to plot the series and check for repeatable patterns in fixed time intervals. The types of seasonality is determined by week in our case. As this plot below shows, it seems like the first 40 lags of the series are correlated with the previous ones more distinctively, while the pattern starts to level off as the number of lags goes over 40. 
 
@@ -155,6 +157,12 @@ Intuitively, this result is rather interesting. One would expect that the multiv
 #### Ending Note
 
 In this project, we explored both univariate and multivariate time-series analysis to predict a 5-week COVID-19 deaths count in the Duke Healthcare Preparedness Coalition (DHPC). The results show that the multivariate model using only features with low correlation with the death count was the best at forecasting future deaths. This outperformed all other multivariate analysis in our hypothesis as well as the univariate analysis result by achieving the lowest RMSE value. This could be that we have limited data and/or features that could potentially give a better prediction results. In the future, we would like to continue exploring different time-series models as well as finding data/features that are even more relavent to the question of interest to potentially optimize the models inform healthcare decision makers with more exhaustive data-driven results. 
+
+*Links*: 
+
+[Github Repository](https://github.com/jenniesun/covid_forcasting)
+
+[Colab Notebook](https://github.com/jenniesun/covid_forcasting/blob/main/BIO823_Final_Project.ipynb).
 
 ![](data-covid-stock.jpeg)
 
